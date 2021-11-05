@@ -1,0 +1,82 @@
+{
+  "type": "Screen",
+  "attributes": {
+    "safe": true
+  },
+  "children": [
+    {
+      "type": "Container",
+      "attributes": {
+        "alignment": "Center",
+        "padding": 20.0
+      },
+      "children": [
+        {
+          "type": "Column",
+          "attributes": {},
+          "children": [
+            {
+              "type": "Container",
+              "attributes": {
+                "alignment": "Center"
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "attributes": {
+                    "caption": "Foo",
+                    "bold": true,
+                    "size": 25.0,
+                    "alignment": "Center"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "attributes": {
+                "alignment": "Center",
+                "padding": 10.0
+              },
+              "children": [
+                {
+                  "type": "Text",
+                  "attributes": {
+                    "caption": "Yo Man",
+                    "size": 18.0,
+                    "alignment": "Center"
+                  },
+                  "children": []
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "attributes": {
+                "alignment": "Center",
+                "padding": 10.0
+              },
+              "children": [
+                {
+                  "type": "PinWithKeyboard",
+                  "attributes": {
+                    "name": "pin",
+                    "deleteText": "page.pin.key.delete",
+                    "maxLength": 6,
+                    "hideText": true
+                  },
+                  "children": [],
+                  "action": {
+                    "type": "Command",
+                    "url": "http://localhost:0/commands/login?phone=+5147580000"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
