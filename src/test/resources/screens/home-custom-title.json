@@ -62,7 +62,7 @@
                   "type": "PinWithKeyboard",
                   "attributes": {
                     "name": "pin",
-                    "deleteText": "page.pin.key.delete",
+                    "deleteText": "Delete",
                     "maxLength": 6,
                     "hideText": true
                   },
