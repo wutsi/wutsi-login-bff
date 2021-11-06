@@ -59,7 +59,7 @@ class HomeScreen(
                         child = PinWithKeyboard(
                             name = "pin",
                             hideText = true,
-                            deleteText = getText("page.pin.key.delete"),
+                            deleteText = getText("page.login.key.delete"),
                             maxLength = 6,
                             action = Action(
                                 type = Command,
