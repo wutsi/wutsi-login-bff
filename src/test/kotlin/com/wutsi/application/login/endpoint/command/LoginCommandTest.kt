@@ -77,6 +77,54 @@ internal class LoginCommandTest : AbstractEndpointTest() {
     }
 
     @Test
+    fun submitWithLocalPhone() {
+        url = "http://localhost:$port/commands/login?phone=$LOCAL_PHONE_NUMBER"
+
+        // GIVEN
+        val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+
+        // WHEN
+        val request = LoginRequest(pin = "123456")
+        val response = rest.postForEntity(url, request, Action::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        assertEquals(listOf("true"), response.headers["x-onboarded"])
+        assertEquals(listOf(accessToken), response.headers["x-access-token"])
+
+        val action = response.body
+        assertEquals(ActionType.Route, action.type)
+        assertEquals("route:/", action.url)
+        assertEquals(true, action.replacement)
+    }
+
+    @Test
+    fun submitWithPhoneHavingSpace() {
+        url = "http://localhost:$port/commands/login?phone=$PHONE_NUMBER"
+
+        // GIVEN
+        val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+
+        // WHEN
+        val request = LoginRequest(pin = "123456")
+        val response = rest.postForEntity(url, request, Action::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        assertEquals(listOf("true"), response.headers["x-onboarded"])
+        assertEquals(listOf(accessToken), response.headers["x-access-token"])
+
+        val action = response.body
+        assertEquals(ActionType.Route, action.type)
+        assertEquals("route:/", action.url)
+        assertEquals(true, action.replacement)
+    }
+
+    @Test
     fun invalidPassword() {
         // GIVEN
         val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")

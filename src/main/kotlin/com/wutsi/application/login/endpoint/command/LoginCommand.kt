@@ -23,7 +23,7 @@ class LoginCommand(
         @RequestParam(name = "phone") phoneNumber: String,
         @Valid @RequestBody request: LoginRequest
     ): ResponseEntity<Action> {
-        val accessToken = service.login(phoneNumber, request)
+        val accessToken = service.login(service.sanitizePhoneNumber(phoneNumber), request)
 
         val headers = HttpHeaders()
         headers["x-access-token"] = accessToken

@@ -35,6 +35,14 @@ class LoginService(
         }
     }
 
+    fun sanitizePhoneNumber(phoneNumber: String): String {
+        var tmp = phoneNumber.trim()
+        return if (tmp.startsWith("+"))
+            tmp
+        else
+            "+$tmp"
+    }
+
     private fun findAccount(phoneNumber: String): AccountSummary {
         val accounts = accountApi.searchAccount(phoneNumber = phoneNumber, limit = 1, offset = 0).accounts
         if (accounts.isNotEmpty()) {
