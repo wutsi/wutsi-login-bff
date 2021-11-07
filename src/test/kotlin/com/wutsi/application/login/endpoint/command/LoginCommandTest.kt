@@ -67,7 +67,6 @@ internal class LoginCommandTest : AbstractEndpointTest() {
         // THEN
         assertEquals(200, response.statusCodeValue)
 
-        assertEquals(listOf("true"), response.headers["x-onboarded"])
         assertEquals(listOf(accessToken), response.headers["x-access-token"])
 
         val action = response.body
@@ -91,7 +90,6 @@ internal class LoginCommandTest : AbstractEndpointTest() {
         // THEN
         assertEquals(200, response.statusCodeValue)
 
-        assertEquals(listOf("true"), response.headers["x-onboarded"])
         assertEquals(listOf(accessToken), response.headers["x-access-token"])
 
         val action = response.body
@@ -115,7 +113,6 @@ internal class LoginCommandTest : AbstractEndpointTest() {
         // THEN
         assertEquals(200, response.statusCodeValue)
 
-        assertEquals(listOf("true"), response.headers["x-onboarded"])
         assertEquals(listOf(accessToken), response.headers["x-access-token"])
 
         val action = response.body

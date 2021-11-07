@@ -3,7 +3,6 @@ package com.wutsi.application.login.endpoint
 import com.wutsi.application.login.exception.AuthenticationException
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.Dialog
-import com.wutsi.flutter.sdui.enums.ActionType.Page
 import com.wutsi.flutter.sdui.enums.ActionType.Prompt
 import com.wutsi.flutter.sdui.enums.ActionType.Route
 import com.wutsi.flutter.sdui.enums.DialogType.Error
@@ -51,16 +50,7 @@ abstract class AbstractEndpoint {
     }
 
     protected fun getText(key: String, args: Array<Any?> = emptyArray()) =
-        try {
-            messages.getMessage(key, args, LocaleContextHolder.getLocale()) ?: key
-        } catch (ex: Exception) {
-            key
-        }
-
-    protected fun gotoPage(page: Int) = Action(
-        type = Page,
-        url = "page:/$page"
-    )
+        messages.getMessage(key, args, LocaleContextHolder.getLocale()) ?: key
 
     protected fun gotoRoute(path: String, replacement: Boolean? = null) = Action(
         type = Route,

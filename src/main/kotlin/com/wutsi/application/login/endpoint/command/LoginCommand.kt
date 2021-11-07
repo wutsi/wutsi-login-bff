@@ -27,7 +27,6 @@ class LoginCommand(
 
         val headers = HttpHeaders()
         headers["x-access-token"] = accessToken
-        headers["x-onboarded"] = "true"
         return ResponseEntity
             .ok()
             .headers(headers)
