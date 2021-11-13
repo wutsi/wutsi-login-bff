@@ -1,15 +1,10 @@
 package com.wutsi.application.login
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.platform.core.tracing.TracingContext
 import com.wutsi.platform.core.tracing.spring.SpringTracingRequestInterceptor
-import com.wutsi.platform.tenant.WutsiTenantApi
-import com.wutsi.platform.tenant.dto.GetTenantResponse
-import com.wutsi.platform.tenant.dto.Logo
-import com.wutsi.platform.tenant.dto.Tenant
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.web.client.RestTemplate
@@ -30,9 +25,6 @@ abstract class AbstractEndpointTest {
     @MockBean
     private lateinit var tracingContext: TracingContext
 
-    @MockBean
-    private lateinit var tenantApi: WutsiTenantApi
-
     protected lateinit var rest: RestTemplate
 
     lateinit var traceId: String
@@ -42,22 +34,10 @@ abstract class AbstractEndpointTest {
         traceId = UUID.randomUUID().toString()
         doReturn(DEVICE_ID).whenever(tracingContext).deviceId()
         doReturn(traceId).whenever(tracingContext).traceId()
+        doReturn("1").whenever(tracingContext).tenantId()
 
         rest = RestTemplate()
         rest.interceptors.add(SpringTracingRequestInterceptor(tracingContext))
-
-        val tenant = Tenant(
-            id = 1,
-            name = "test",
-            logos = listOf(
-                Logo(type = "PICTORIAL", url = "http://www.goole.com/images/1.png")
-            ),
-            countries = listOf("CM"),
-            languages = listOf("en", "fr"),
-            currency = "XAF",
-            domainName = "www.wutsi.com"
-        )
-        doReturn(GetTenantResponse(tenant)).whenever(tenantApi).getTenant(any())
     }
 
     protected fun assertEndpointEquals(expectedPath: String, url: String) {
