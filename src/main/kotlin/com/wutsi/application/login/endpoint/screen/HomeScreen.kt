@@ -1,6 +1,7 @@
 package com.wutsi.application.login.endpoint.screen
 
 import com.wutsi.application.login.endpoint.AbstractQuery
+import com.wutsi.application.login.endpoint.Page
 import com.wutsi.application.login.endpoint.Theme
 import com.wutsi.application.login.service.URLBuilder
 import com.wutsi.flutter.sdui.Action
@@ -29,6 +30,7 @@ class HomeScreen(
         @RequestParam(name = "title", required = false) title: String? = null,
         @RequestParam(name = "sub-title", required = false) subTitle: String? = null,
     ) = Screen(
+        id = Page.HOME,
         safe = true,
         child = Container(
             alignment = Center,

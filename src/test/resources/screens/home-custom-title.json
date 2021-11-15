@@ -1,6 +1,7 @@
 {
   "type": "Screen",
   "attributes": {
+    "id": "page.login",
     "safe": true
   },
   "children": [
