@@ -37,6 +37,7 @@ class HomeScreen(
         @RequestParam(name = "title", required = false) title: String? = null,
         @RequestParam(name = "sub-title", required = false) subTitle: String? = null,
         @RequestParam(name = "return-url", required = false) returnUrl: String? = null,
+        @RequestParam(name = "return-to-route", required = false, defaultValue = "true") returnToRoute: Boolean = true,
         @RequestParam(name = "auth", required = false, defaultValue = "true") auth: Boolean = true,
     ) = Screen(
         id = screenId ?: Page.HOME,
@@ -94,7 +95,7 @@ class HomeScreen(
                             maxLength = 6,
                             action = Action(
                                 type = Command,
-                                url = urlBuilder.build(submitUrl(phoneNumber, auth, returnUrl))
+                                url = urlBuilder.build(submitUrl(phoneNumber, auth, returnUrl, returnToRoute))
                             )
                         )
                     )
@@ -103,8 +104,8 @@ class HomeScreen(
         )
     ).toWidget()
 
-    private fun submitUrl(phoneNumber: String, auth: Boolean, returnUrl: String?): String {
-        val url = "commands/login?auth=$auth&phone=" + URLEncoder.encode(phoneNumber, "utf-8")
+    private fun submitUrl(phoneNumber: String, auth: Boolean, returnUrl: String?, returnToRoute: Boolean): String {
+        val url = "commands/login?auth=$auth&return-to-route=$returnToRoute&phone=" + URLEncoder.encode(phoneNumber, "utf-8")
         return if (returnUrl == null)
             url
         else

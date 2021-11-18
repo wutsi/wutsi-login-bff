@@ -3,7 +3,6 @@ package com.wutsi.application.login.endpoint.command
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.doThrow
-import com.nhaarman.mockitokotlin2.mock
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
@@ -20,6 +19,9 @@ import com.wutsi.platform.security.dto.Application
 import com.wutsi.platform.security.dto.AuthenticationResponse
 import com.wutsi.platform.security.dto.GetApplicationResponse
 import feign.FeignException
+import feign.Request
+import feign.Request.HttpMethod.POST
+import feign.RequestTemplate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertNull
@@ -29,6 +31,7 @@ import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.web.server.LocalServerPort
 import java.net.URLEncoder
+import java.nio.charset.Charset
 import java.util.UUID
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -131,7 +134,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
         val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
         doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
 
-        val ex = mock<FeignException>()
+        val ex = createFeignException("xxx")
         doThrow(ex).whenever(accountApi).checkPassword(any(), any())
 
         // WHEN
@@ -144,6 +147,29 @@ internal class LoginCommandTest : AbstractEndpointTest() {
         val action = response.body
         assertEquals(ActionType.Prompt, action.type)
         assertEquals(DialogType.Error, action.prompt?.type)
+        assertEquals(getText("message.error.login-failed"), action.prompt?.message)
+    }
+
+    @Test
+    fun authenticationFailed() {
+        // GIVEN
+        val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+
+        val ex = createFeignException("xxx")
+        doThrow(ex).whenever(securityApi).authenticate(any())
+
+        // WHEN
+        val request = LoginRequest(pin = "777777")
+        val response = rest.postForEntity(url, request, Action::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        val action = response.body
+        assertEquals(ActionType.Prompt, action.type)
+        assertEquals(DialogType.Error, action.prompt?.type)
+        assertEquals(getText("message.error.login-failed"), action.prompt?.message)
     }
 
     @Test
@@ -189,7 +215,10 @@ internal class LoginCommandTest : AbstractEndpointTest() {
 
         // WHEN
         val request = LoginRequest(pin = "123456")
-        url = "http://localhost:$port/commands/login?auth=false&return-url=https://www.google.ca&phone=" + URLEncoder.encode(PHONE_NUMBER, "utf-8")
+        url = "http://localhost:$port/commands/login?auth=false&return-to-route=false&return-url=https://www.google.ca&phone=" + URLEncoder.encode(
+            PHONE_NUMBER,
+            "utf-8"
+        )
         val response = rest.postForEntity(url, request, Action::class.java)
 
         // THEN
@@ -199,8 +228,21 @@ internal class LoginCommandTest : AbstractEndpointTest() {
         verify(securityApi, never()).authenticate(any())
 
         val action = response.body
-        assertEquals(ActionType.Route, action.type)
+        assertEquals(ActionType.Command, action.type)
         assertEquals("https://www.google.ca", action.url)
         assertNull(action.replacement)
     }
+
+    private fun createFeignException(errorCode: String) = FeignException.Conflict(
+        "",
+        Request.create(POST, "https://www.google.ca", emptyMap(), "".toByteArray(), Charset.defaultCharset(), RequestTemplate()),
+        """
+            {
+                "error":{
+                    "code": "$errorCode",
+                }
+            }
+        """.trimIndent().toByteArray(),
+        emptyMap()
+    )
 }

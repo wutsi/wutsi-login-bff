@@ -7,6 +7,8 @@ import com.wutsi.platform.core.tracing.TracingContext
 import com.wutsi.platform.core.tracing.spring.SpringTracingRequestInterceptor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.context.MessageSource
+import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.client.RestTemplate
 import java.util.UUID
 import kotlin.test.BeforeTest
@@ -24,6 +26,9 @@ abstract class AbstractEndpointTest {
 
     @MockBean
     private lateinit var tracingContext: TracingContext
+
+    @Autowired
+    private lateinit var messages: MessageSource
 
     protected lateinit var rest: RestTemplate
 
@@ -54,4 +59,7 @@ abstract class AbstractEndpointTest {
         val writer = mapper.writerWithDefaultPrettyPrinter()
         assertEquals(writer.writeValueAsString(expected), writer.writeValueAsString(value))
     }
+
+    protected fun getText(key: String, args: Array<Any?> = emptyArray()) =
+        messages.getMessage(key, args, LocaleContextHolder.getLocale()) ?: key
 }

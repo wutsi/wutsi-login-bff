@@ -75,11 +75,7 @@ class LoginService(
 
     private fun toErrorResponse(ex: FeignException): ErrorResponse? =
         try {
-            val buff = ex.responseBody().get()
-            val bytes = ByteArray(buff.remaining())
-            buff.get(bytes)
-
-            mapper.readValue(bytes, ErrorResponse::class.java)
+            mapper.readValue(ex.contentUTF8(), ErrorResponse::class.java)
         } catch (ex: Exception) {
             null
         }
