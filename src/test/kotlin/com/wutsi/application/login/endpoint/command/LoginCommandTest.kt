@@ -4,6 +4,8 @@ import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
 import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.never
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.application.login.AbstractEndpointTest
 import com.wutsi.application.login.dto.LoginRequest
@@ -19,6 +21,8 @@ import com.wutsi.platform.security.dto.AuthenticationResponse
 import com.wutsi.platform.security.dto.GetApplicationResponse
 import feign.FeignException
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
@@ -175,5 +179,28 @@ internal class LoginCommandTest : AbstractEndpointTest() {
         val action = response.body
         assertEquals(ActionType.Prompt, action.type)
         assertEquals(DialogType.Error, action.prompt?.type)
+    }
+
+    @Test
+    fun verifyPasswordOnlyWithURL() {
+        // GIVEN
+        val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+
+        // WHEN
+        val request = LoginRequest(pin = "123456")
+        url = "http://localhost:$port/commands/login?auth=false&return-url=https://www.google.ca&phone=" + URLEncoder.encode(PHONE_NUMBER, "utf-8")
+        val response = rest.postForEntity(url, request, Action::class.java)
+
+        // THEN
+        assertEquals(200, response.statusCodeValue)
+
+        assertFalse(response.headers.keys.contains("x-access-token"))
+        verify(securityApi, never()).authenticate(any())
+
+        val action = response.body
+        assertEquals(ActionType.Route, action.type)
+        assertEquals("https://www.google.ca", action.url)
+        assertNull(action.replacement)
     }
 }

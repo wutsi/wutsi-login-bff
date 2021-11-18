@@ -21,17 +21,21 @@ class LoginCommand(
     @PostMapping
     fun submit(
         @RequestParam(name = "phone") phoneNumber: String,
+        @RequestParam(name = "auth", required = false, defaultValue = "true") auth: Boolean = true,
+        @RequestParam(name = "return-url", required = false) returnUrl: String? = null,
         @Valid @RequestBody request: LoginRequest
     ): ResponseEntity<Action> {
-        val accessToken = service.login(service.sanitizePhoneNumber(phoneNumber), request)
+        val accessToken = service.login(service.sanitizePhoneNumber(phoneNumber), auth, request)
 
         val headers = HttpHeaders()
-        headers["x-access-token"] = accessToken
+        if (accessToken != null) {
+            headers["x-access-token"] = accessToken
+        }
         return ResponseEntity
             .ok()
             .headers(headers)
             .body(
-                gotoRoute("/", true)
+                returnUrl?.let { gotoUrl(it) } ?: gotoRoute("/", true)
             )
     }
 }

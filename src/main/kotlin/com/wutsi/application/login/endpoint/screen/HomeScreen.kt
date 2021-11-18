@@ -37,6 +37,7 @@ class HomeScreen(
         @RequestParam(name = "title", required = false) title: String? = null,
         @RequestParam(name = "sub-title", required = false) subTitle: String? = null,
         @RequestParam(name = "return-url", required = false) returnUrl: String? = null,
+        @RequestParam(name = "auth", required = false, defaultValue = "true") auth: Boolean = true,
     ) = Screen(
         id = screenId ?: Page.HOME,
         appBar = AppBar(
@@ -93,7 +94,7 @@ class HomeScreen(
                             maxLength = 6,
                             action = Action(
                                 type = Command,
-                                url = returnUrl ?: urlBuilder.build("commands/login?phone=" + URLEncoder.encode(phoneNumber, "utf-8"))
+                                url = urlBuilder.build(submitUrl(phoneNumber, auth, returnUrl))
                             )
                         )
                     )
@@ -101,4 +102,12 @@ class HomeScreen(
             )
         )
     ).toWidget()
+
+    private fun submitUrl(phoneNumber: String, auth: Boolean, returnUrl: String?): String {
+        val url = "commands/login?auth=$auth&phone=" + URLEncoder.encode(phoneNumber, "utf-8")
+        return if (returnUrl == null)
+            url
+        else
+            url + "&=" + URLEncoder.encode(returnUrl, "utf-8")
+    }
 }

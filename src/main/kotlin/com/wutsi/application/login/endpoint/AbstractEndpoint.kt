@@ -57,4 +57,9 @@ abstract class AbstractEndpoint {
         url = "route:$path",
         replacement = replacement
     )
+
+    protected fun gotoUrl(url: String) = Action(
+        type = Route,
+        url = url
+    )
 }

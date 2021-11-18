@@ -20,15 +20,19 @@ class LoginService(
     private val mapper: ObjectMapper,
     private val applicationProvider: ApplicationProvider
 ) {
-    fun login(phoneNumber: String, request: LoginRequest): String {
+    fun login(phoneNumber: String, auth: Boolean, request: LoginRequest): String? {
         logger.add("phone_number", phoneNumber)
+        logger.add("auth", auth)
         try {
             // Check password
             val account = findAccount(phoneNumber)
             accountApi.checkPassword(account.id, request.pin)
 
             // Authenticate
-            return authenticate(phoneNumber)
+            return if (auth)
+                authenticate(phoneNumber)
+            else
+                null
         } catch (ex: FeignException) {
             val response = toErrorResponse(ex)
             throw AuthenticationException("Authentication failed", response?.error)
