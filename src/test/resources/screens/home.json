@@ -19,13 +19,15 @@
             {
               "type": "Container",
               "attributes": {
-                "alignment": "Center"
+                "alignment": "Center",
+                "padding": 10.0
               },
               "children": [
                 {
                   "type": "Text",
                   "attributes": {
                     "caption": "Login",
+                    "color": "#1D7EDF",
                     "bold": true,
                     "size": 25.0,
                     "alignment": "Center"
@@ -79,5 +81,14 @@
         }
       ]
     }
-  ]
+  ],
+  "appBar": {
+    "type": "AppBar",
+    "attributes": {
+      "elevation": 0.0,
+      "backgroundColor": "#FFFFFF",
+      "automaticallyImplyLeading": false
+    },
+    "children": []
+  }
 }

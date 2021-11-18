@@ -24,8 +24,8 @@ internal class HomeScreenTest : AbstractEndpointTest() {
     fun defaultLoginScreen() = assertEndpointEquals("/screens/home.json", url)
 
     @Test
-    fun loginScreenWithCustomTitles() {
-        url = "http://localhost:$port?phone=+5147580000&title=Foo&sub-title=Yo+Man"
-        assertEndpointEquals("/screens/home-custom-title.json", url)
+    fun customLoginScreen() {
+        url = "http://localhost:$port?phone=+5147580000&title=Foo&sub-title=Yo+Man&icon=i_c_o_n&return-url=https://www.google.ca"
+        assertEndpointEquals("/screens/home-custom.json", url)
     }
 }

@@ -19,18 +19,46 @@
             {
               "type": "Container",
               "attributes": {
-                "alignment": "Center"
+                "alignment": "Center",
+                "padding": 10.0
               },
               "children": [
                 {
-                  "type": "Text",
+                  "type": "Row",
                   "attributes": {
-                    "caption": "Foo",
-                    "bold": true,
-                    "size": 25.0,
-                    "alignment": "Center"
+                    "mainAxisAlignment": "center",
+                    "crossAxisAlignment": "center"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "type": "Container",
+                      "attributes": {
+                        "padding": 5.0
+                      },
+                      "children": [
+                        {
+                          "type": "Icon",
+                          "attributes": {
+                            "code": "i_c_o_n",
+                            "size": 25.0,
+                            "color": "#1D7EDF"
+                          },
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Text",
+                      "attributes": {
+                        "caption": "Foo",
+                        "color": "#1D7EDF",
+                        "bold": true,
+                        "size": 25.0,
+                        "alignment": "Center"
+                      },
+                      "children": []
+                    }
+                  ]
                 }
               ]
             },
@@ -70,7 +98,7 @@
                   "children": [],
                   "action": {
                     "type": "Command",
-                    "url": "http://localhost:0/commands/login?phone=+5147580000"
+                    "url": "https://www.google.ca"
                   }
                 }
               ]
@@ -79,5 +107,14 @@
         }
       ]
     }
-  ]
+  ],
+  "appBar": {
+    "type": "AppBar",
+    "attributes": {
+      "elevation": 0.0,
+      "backgroundColor": "#FFFFFF",
+      "automaticallyImplyLeading": true
+    },
+    "children": []
+  }
 }
