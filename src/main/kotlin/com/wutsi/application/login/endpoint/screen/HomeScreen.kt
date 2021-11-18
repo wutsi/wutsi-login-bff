@@ -33,7 +33,7 @@ class HomeScreen(
     @PostMapping
     fun index(
         @RequestParam(name = "phone") phoneNumber: String,
-        @RequestParam(name = "icon", required = false) icon: String? = "",
+        @RequestParam(name = "icon", required = false) icon: String? = Theme.ICON_LOGIN,
         @RequestParam(name = "title", required = false) title: String? = null,
         @RequestParam(name = "sub-title", required = false) subTitle: String? = null,
         @RequestParam(name = "return-url", required = false) returnUrl: String? = null,

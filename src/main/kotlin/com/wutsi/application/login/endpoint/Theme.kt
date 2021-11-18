@@ -7,4 +7,5 @@ object Theme {
     const val SUCCESS_COLOR = "#4CAF50"
     const val WHITE_COLOR = "#FFFFFF"
     const val BLACK_COLOR = "#000000"
+    const val ICON_LOGIN = "eaab"
 }
