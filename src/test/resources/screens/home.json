@@ -2,7 +2,7 @@
   "type": "Screen",
   "attributes": {
     "id": "page.login",
-    "safe": true
+    "safe": false
   },
   "children": [
     {
@@ -24,15 +24,41 @@
               },
               "children": [
                 {
-                  "type": "Text",
+                  "type": "Row",
                   "attributes": {
-                    "caption": "Login",
-                    "color": "#1D7EDF",
-                    "bold": true,
-                    "size": 25.0,
-                    "alignment": "Center"
+                    "mainAxisAlignment": "center",
+                    "crossAxisAlignment": "center"
                   },
-                  "children": []
+                  "children": [
+                    {
+                      "type": "Container",
+                      "attributes": {
+                        "padding": 5.0
+                      },
+                      "children": [
+                        {
+                          "type": "Icon",
+                          "attributes": {
+                            "code": "eaab",
+                            "size": 25.0,
+                            "color": "#1D7EDF"
+                          },
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Text",
+                      "attributes": {
+                        "caption": "Login",
+                        "color": "#1D7EDF",
+                        "bold": true,
+                        "size": 25.0,
+                        "alignment": "Center"
+                      },
+                      "children": []
+                    }
+                  ]
                 }
               ]
             },
@@ -87,7 +113,7 @@
     "attributes": {
       "elevation": 0.0,
       "backgroundColor": "#FFFFFF",
-      "automaticallyImplyLeading": false
+      "foregroundColor": "#000000"
     },
     "children": []
   }

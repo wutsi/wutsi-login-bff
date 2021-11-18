@@ -13,7 +13,6 @@ import com.wutsi.flutter.sdui.PinWithKeyboard
 import com.wutsi.flutter.sdui.Row
 import com.wutsi.flutter.sdui.Screen
 import com.wutsi.flutter.sdui.Text
-import com.wutsi.flutter.sdui.WidgetAware
 import com.wutsi.flutter.sdui.enums.ActionType.Command
 import com.wutsi.flutter.sdui.enums.Alignment.Center
 import com.wutsi.flutter.sdui.enums.CrossAxisAlignment.center
@@ -33,16 +32,16 @@ class HomeScreen(
     @PostMapping
     fun index(
         @RequestParam(name = "phone") phoneNumber: String,
-        @RequestParam(name = "icon", required = false) icon: String? = Theme.ICON_LOGIN,
+        @RequestParam(name = "screen-id", required = false) screenId: String? = null,
+        @RequestParam(name = "icon", required = false) icon: String? = null,
         @RequestParam(name = "title", required = false) title: String? = null,
         @RequestParam(name = "sub-title", required = false) subTitle: String? = null,
         @RequestParam(name = "return-url", required = false) returnUrl: String? = null,
     ) = Screen(
-        id = Page.HOME,
-        safe = true,
+        id = screenId ?: Page.HOME,
         appBar = AppBar(
             backgroundColor = Theme.WHITE_COLOR,
-            automaticallyImplyLeading = returnUrl != null,
+            foregroundColor = Theme.BLACK_COLOR,
             elevation = 0.0
         ),
         child = Container(
@@ -53,7 +52,27 @@ class HomeScreen(
                     Container(
                         alignment = Center,
                         padding = 10.0,
-                        child = title(icon, title)
+                        child = Row(
+                            children = listOf(
+                                Container(
+                                    padding = 5.0,
+                                    child = Icon(
+                                        code = icon ?: Theme.ICON_LOGIN,
+                                        color = Theme.PRIMARY_COLOR,
+                                        size = Theme.X_LARGE_TEXT_SIZE,
+                                    ),
+                                ),
+                                Text(
+                                    caption = title ?: getText("page.login.title"),
+                                    alignment = TextAlignment.Center,
+                                    size = Theme.X_LARGE_TEXT_SIZE,
+                                    bold = true,
+                                    color = Theme.PRIMARY_COLOR,
+                                ),
+                            ),
+                            crossAxisAlignment = center,
+                            mainAxisAlignment = MainAxisAlignment.center
+                        )
                     ),
                     Container(
                         alignment = Center,
@@ -82,34 +101,4 @@ class HomeScreen(
             )
         )
     ).toWidget()
-
-    fun title(icon: String?, title: String?): WidgetAware {
-        val text = Text(
-            caption = title ?: getText("page.login.title"),
-            alignment = TextAlignment.Center,
-            size = Theme.X_LARGE_TEXT_SIZE,
-            bold = true,
-            color = Theme.PRIMARY_COLOR,
-        )
-
-        return if (icon == null) {
-            text
-        } else {
-            Row(
-                children = listOf(
-                    Container(
-                        padding = 5.0,
-                        child = Icon(
-                            code = icon,
-                            color = Theme.PRIMARY_COLOR,
-                            size = Theme.X_LARGE_TEXT_SIZE,
-                        ),
-                    ),
-                    text,
-                ),
-                crossAxisAlignment = center,
-                mainAxisAlignment = MainAxisAlignment.center
-            )
-        }
-    }
 }
