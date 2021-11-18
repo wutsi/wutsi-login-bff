@@ -108,6 +108,6 @@ class HomeScreen(
         return if (returnUrl == null)
             url
         else
-            url + "&=" + URLEncoder.encode(returnUrl, "utf-8")
+            url + "&return-url=" + URLEncoder.encode(returnUrl, "utf-8")
     }
 }
