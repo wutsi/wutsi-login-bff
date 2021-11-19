@@ -30,5 +30,5 @@ See [Figma](https://www.figma.com/file/cwHu4uWFhPiQhYdt7AzpCs/Wutsi-eWallet?node
 | title | | Main title |
 | sub-title | | Sub Title |
 | return-url | | URL where to redirect the user after completing the validation |
-| return-to-route | `true` | If `true`, then the `return-url` is a `Route`. Else, its a `Command`.
+| return-to-route | `true` | Indicate if the return-url is a `Route` or `Command`.
 | auth | `true` | If `true` a new authentication token will be created after validating the user PIN |
