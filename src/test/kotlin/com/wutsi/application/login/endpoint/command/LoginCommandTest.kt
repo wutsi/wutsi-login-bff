@@ -65,7 +65,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
     fun submit() {
         // GIVEN
         val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
-        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any())
 
         // WHEN
         val request = LoginRequest(pin = "123456")
@@ -88,7 +88,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
 
         // GIVEN
         val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
-        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any())
 
         // WHEN
         val request = LoginRequest(pin = "123456")
@@ -111,7 +111,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
 
         // GIVEN
         val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
-        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any())
 
         // WHEN
         val request = LoginRequest(pin = "123456")
@@ -132,7 +132,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
     fun invalidPassword() {
         // GIVEN
         val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
-        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any())
 
         val ex = createFeignException("xxx")
         doThrow(ex).whenever(accountApi).checkPassword(any(), any())
@@ -154,7 +154,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
     fun authenticationFailed() {
         // GIVEN
         val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
-        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any())
 
         val ex = createFeignException("xxx")
         doThrow(ex).whenever(securityApi).authenticate(any())
@@ -175,7 +175,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
     @Test
     fun accountNotFound() {
         // GIVEN
-        doReturn(SearchAccountResponse(emptyList())).whenever(accountApi).searchAccount(any(), any(), any())
+        doReturn(SearchAccountResponse(emptyList())).whenever(accountApi).searchAccount(any())
 
         // WHEN
         val request = LoginRequest(pin = "777777")
@@ -193,7 +193,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
     fun accountNotActive() {
         // GIVEN
         val account = AccountSummary(id = System.currentTimeMillis(), status = "SUSPENDED")
-        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any())
 
         // WHEN
         val request = LoginRequest(pin = "123456")
@@ -211,7 +211,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
     fun verifyPasswordOnlyWithURL() {
         // GIVEN
         val account = AccountSummary(id = System.currentTimeMillis(), status = "ACTIVE")
-        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any(), any(), any())
+        doReturn(SearchAccountResponse(listOf(account))).whenever(accountApi).searchAccount(any())
 
         // WHEN
         val request = LoginRequest(pin = "123456")

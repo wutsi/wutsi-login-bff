@@ -5,6 +5,7 @@ import com.wutsi.application.login.dto.LoginRequest
 import com.wutsi.application.login.exception.AuthenticationException
 import com.wutsi.platform.account.WutsiAccountApi
 import com.wutsi.platform.account.dto.AccountSummary
+import com.wutsi.platform.account.dto.SearchAccountRequest
 import com.wutsi.platform.core.error.ErrorResponse
 import com.wutsi.platform.core.logging.KVLogger
 import com.wutsi.platform.security.WutsiSecurityApi
@@ -48,7 +49,11 @@ class LoginService(
     }
 
     private fun findAccount(phoneNumber: String): AccountSummary {
-        val accounts = accountApi.searchAccount(phoneNumber = phoneNumber, limit = 1, offset = 0).accounts
+        val accounts = accountApi.searchAccount(
+            SearchAccountRequest(
+                phoneNumber = phoneNumber
+            )
+        ).accounts
         if (accounts.isNotEmpty()) {
             val account = accounts[0]
             if (account.status != "ACTIVE") {
