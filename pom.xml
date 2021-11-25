@@ -6,7 +6,7 @@
 
   <artifactId>wutsi-login-bff</artifactId>
   <groupId>com.wutsi.application.login</groupId>
-  <version>0.0.12-SNAPSHOT</version>
+  <version>0.0.12</version>
   <packaging>jar</packaging>
   <name>wutsi-login-bff</name>
 
@@ -139,7 +139,7 @@
 
   <scm>
     <developerConnection>scm:git:https://github.com/wutsi/wutsi-login-bff.git</developerConnection>
-    <tag>HEAD</tag>
+    <tag>wutsi-login-bff-0.0.12</tag>
   </scm>
   <distributionManagement>
     <repository>
