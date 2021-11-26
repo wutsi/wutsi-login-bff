@@ -1,7 +1,7 @@
 package com.wutsi.application.login.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.wutsi.application.login.dto.LoginRequest
+import com.wutsi.application.login.endpoint.home.dto.LoginRequest
 import com.wutsi.application.login.exception.AuthenticationException
 import com.wutsi.platform.account.WutsiAccountApi
 import com.wutsi.platform.account.dto.AccountSummary

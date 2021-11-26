@@ -1,4 +1,4 @@
-package com.wutsi.application.login.endpoint.command
+package com.wutsi.application.login.endpoint.home.command
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
@@ -7,7 +7,7 @@ import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.application.login.AbstractEndpointTest
-import com.wutsi.application.login.dto.LoginRequest
+import com.wutsi.application.login.endpoint.home.dto.LoginRequest
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.enums.ActionType
 import com.wutsi.flutter.sdui.enums.DialogType

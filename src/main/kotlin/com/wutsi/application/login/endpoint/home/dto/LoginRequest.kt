@@ -1,4 +1,4 @@
-package com.wutsi.application.login.dto
+package com.wutsi.application.login.endpoint.home.dto
 
 import javax.validation.constraints.Max
 import javax.validation.constraints.Min

@@ -1,7 +1,7 @@
-package com.wutsi.application.login.endpoint.command
+package com.wutsi.application.login.endpoint.home.command
 
-import com.wutsi.application.login.dto.LoginRequest
 import com.wutsi.application.login.endpoint.AbstractCommand
+import com.wutsi.application.login.endpoint.home.dto.LoginRequest
 import com.wutsi.application.login.service.LoginService
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.enums.ActionType

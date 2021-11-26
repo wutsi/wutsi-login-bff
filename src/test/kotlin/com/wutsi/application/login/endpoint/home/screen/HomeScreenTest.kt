@@ -1,4 +1,4 @@
-package com.wutsi.application.login.endpoint.screen
+package com.wutsi.application.login.endpoint.home.screen
 
 import com.wutsi.application.login.AbstractEndpointTest
 import org.junit.jupiter.api.BeforeEach
