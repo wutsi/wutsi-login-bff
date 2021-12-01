@@ -32,7 +32,7 @@
     <sdui-kotlin.version>0.0.29</sdui-kotlin.version>
     <wutsi-platform-core.version>0.0.74</wutsi-platform-core.version>
     <wutsi-account.version>1.0.12</wutsi-account.version>
-    <wutsi-security.version>0.0.11</wutsi-security.version>
+    <wutsi-security.version>0.0.12</wutsi-security.version>
     <wutsi-sms.version>1.0.7</wutsi-sms.version>
   </properties>
 
