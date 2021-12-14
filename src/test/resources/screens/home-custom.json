@@ -8,8 +8,7 @@
     {
       "type": "Container",
       "attributes": {
-        "alignment": "Center",
-        "padding": 20.0
+        "alignment": "Center"
       },
       "children": [
         {
@@ -83,8 +82,7 @@
             {
               "type": "Container",
               "attributes": {
-                "alignment": "Center",
-                "padding": 10.0
+                "alignment": "Center"
               },
               "children": [
                 {

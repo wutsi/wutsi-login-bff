@@ -48,7 +48,6 @@ class HomeScreen(
         ),
         child = Container(
             alignment = Center,
-            padding = 20.0,
             child = Column(
                 children = listOf(
                     Container(
@@ -87,7 +86,6 @@ class HomeScreen(
                     ),
                     Container(
                         alignment = Center,
-                        padding = 10.0,
                         child = PinWithKeyboard(
                             name = "pin",
                             hideText = true,
@@ -105,7 +103,8 @@ class HomeScreen(
     ).toWidget()
 
     private fun submitUrl(phoneNumber: String, auth: Boolean, returnUrl: String?, returnToRoute: Boolean): String {
-        val url = "commands/login?auth=$auth&return-to-route=$returnToRoute&phone=" + URLEncoder.encode(phoneNumber, "utf-8")
+        val url =
+            "commands/login?auth=$auth&return-to-route=$returnToRoute&phone=" + URLEncoder.encode(phoneNumber, "utf-8")
         return if (returnUrl == null)
             url
         else
