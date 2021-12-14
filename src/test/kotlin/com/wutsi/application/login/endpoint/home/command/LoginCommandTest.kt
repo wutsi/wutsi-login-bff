@@ -146,8 +146,8 @@ internal class LoginCommandTest : AbstractEndpointTest() {
 
         val action = response.body
         assertEquals(ActionType.Prompt, action.type)
-        assertEquals(DialogType.Error, action.prompt?.type)
-        assertEquals(getText("message.error.login-failed"), action.prompt?.message)
+        assertEquals(DialogType.Error.name, action.prompt?.attributes?.get("type"))
+        assertEquals(getText("message.error.login-failed"), action.prompt?.attributes?.get("message"))
     }
 
     @Test
@@ -168,8 +168,8 @@ internal class LoginCommandTest : AbstractEndpointTest() {
 
         val action = response.body
         assertEquals(ActionType.Prompt, action.type)
-        assertEquals(DialogType.Error, action.prompt?.type)
-        assertEquals(getText("message.error.login-failed"), action.prompt?.message)
+        assertEquals(DialogType.Error.name, action.prompt?.attributes?.get("type"))
+        assertEquals(getText("message.error.login-failed"), action.prompt?.attributes?.get("message"))
     }
 
     @Test
@@ -186,7 +186,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
 
         val action = response.body
         assertEquals(ActionType.Prompt, action.type)
-        assertEquals(DialogType.Error, action.prompt?.type)
+        assertEquals(DialogType.Error.name, action.prompt?.attributes?.get("type"))
     }
 
     @Test
@@ -204,7 +204,7 @@ internal class LoginCommandTest : AbstractEndpointTest() {
 
         val action = response.body
         assertEquals(ActionType.Prompt, action.type)
-        assertEquals(DialogType.Error, action.prompt?.type)
+        assertEquals(DialogType.Error.name, action.prompt?.attributes?.get("type"))
     }
 
     @Test
@@ -215,10 +215,9 @@ internal class LoginCommandTest : AbstractEndpointTest() {
 
         // WHEN
         val request = LoginRequest(pin = "123456")
-        url = "http://localhost:$port/commands/login?auth=false&return-to-route=false&return-url=https://www.google.ca&phone=" + URLEncoder.encode(
-            PHONE_NUMBER,
-            "utf-8"
-        )
+        val xphone = URLEncoder.encode(PHONE_NUMBER, "utf-8")
+        url =
+            "http://localhost:$port/commands/login?auth=false&return-to-route=false&return-url=https://www.google.ca&phone=$xphone"
         val response = rest.postForEntity(url, request, Action::class.java)
 
         // THEN
@@ -235,7 +234,14 @@ internal class LoginCommandTest : AbstractEndpointTest() {
 
     private fun createFeignException(errorCode: String) = FeignException.Conflict(
         "",
-        Request.create(POST, "https://www.google.ca", emptyMap(), "".toByteArray(), Charset.defaultCharset(), RequestTemplate()),
+        Request.create(
+            POST,
+            "https://www.google.ca",
+            emptyMap(),
+            "".toByteArray(),
+            Charset.defaultCharset(),
+            RequestTemplate()
+        ),
         """
             {
                 "error":{
