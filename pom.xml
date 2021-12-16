@@ -29,9 +29,9 @@
     <kotlin-mockito.version>2.2.0</kotlin-mockito.version>
     <klint.version>0.43.0</klint.version>
     <maven-antrun-plugin.version>3.0.0</maven-antrun-plugin.version>
-    <sdui-kotlin.version>0.0.40</sdui-kotlin.version>
+    <sdui-kotlin.version>0.0.42</sdui-kotlin.version>
     <wutsi-platform-core.version>0.0.78</wutsi-platform-core.version>
-    <wutsi-account.version>1.0.17</wutsi-account.version>
+    <wutsi-account.version>1.0.18</wutsi-account.version>
     <wutsi-security.version>0.0.12</wutsi-security.version>
     <wutsi-sms.version>1.0.7</wutsi-sms.version>
   </properties>

@@ -68,7 +68,6 @@
                   "type": "PinWithKeyboard",
                   "attributes": {
                     "name": "pin",
-                    "deleteText": "Delete",
                     "maxLength": 6,
                     "hideText": true,
                     "keyboardButtonSize": 70.0
