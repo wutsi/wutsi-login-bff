@@ -71,7 +71,7 @@
                     "deleteText": "Delete",
                     "maxLength": 6,
                     "hideText": true,
-                    "keyboardButtonSize": 50.0
+                    "keyboardButtonSize": 70.0
                   },
                   "children": [],
                   "action": {

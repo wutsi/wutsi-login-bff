@@ -80,7 +80,7 @@ class HomeScreen(
                             hideText = true,
                             deleteText = getText("page.login.key.delete"),
                             maxLength = 6,
-                            keyboardButtonSize = 50.0,
+                            keyboardButtonSize = 70.0,
                             action = Action(
                                 type = Command,
                                 url = urlBuilder.build(submitUrl(phoneNumber, auth, returnUrl, returnToRoute))
