@@ -39,7 +39,7 @@
                           "type": "Icon",
                           "attributes": {
                             "code": "eaab",
-                            "size": 25.0,
+                            "size": 16.0,
                             "color": "#1D7EDF"
                           },
                           "children": []
@@ -49,33 +49,12 @@
                     {
                       "type": "Text",
                       "attributes": {
-                        "caption": "Login",
-                        "color": "#1D7EDF",
-                        "bold": true,
-                        "size": 25.0,
+                        "caption": "Enter your PIN to access your Wallet",
                         "alignment": "Center"
                       },
                       "children": []
                     }
                   ]
-                }
-              ]
-            },
-            {
-              "type": "Container",
-              "attributes": {
-                "alignment": "Center",
-                "padding": 10.0
-              },
-              "children": [
-                {
-                  "type": "Text",
-                  "attributes": {
-                    "caption": "Enter your PIN to access your Wallet",
-                    "size": 18.0,
-                    "alignment": "Center"
-                  },
-                  "children": []
                 }
               ]
             },
@@ -109,6 +88,7 @@
   "appBar": {
     "type": "AppBar",
     "attributes": {
+      "title": "Login",
       "elevation": 0.0,
       "backgroundColor": "#FFFFFF",
       "foregroundColor": "#000000"

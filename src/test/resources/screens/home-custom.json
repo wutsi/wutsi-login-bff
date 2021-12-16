@@ -39,7 +39,7 @@
                           "type": "Icon",
                           "attributes": {
                             "code": "i_c_o_n",
-                            "size": 25.0,
+                            "size": 16.0,
                             "color": "#1D7EDF"
                           },
                           "children": []
@@ -49,33 +49,12 @@
                     {
                       "type": "Text",
                       "attributes": {
-                        "caption": "Foo",
-                        "color": "#1D7EDF",
-                        "bold": true,
-                        "size": 25.0,
+                        "caption": "Yo Man",
                         "alignment": "Center"
                       },
                       "children": []
                     }
                   ]
-                }
-              ]
-            },
-            {
-              "type": "Container",
-              "attributes": {
-                "alignment": "Center",
-                "padding": 10.0
-              },
-              "children": [
-                {
-                  "type": "Text",
-                  "attributes": {
-                    "caption": "Yo Man",
-                    "size": 18.0,
-                    "alignment": "Center"
-                  },
-                  "children": []
                 }
               ]
             },
@@ -109,6 +88,7 @@
   "appBar": {
     "type": "AppBar",
     "attributes": {
+      "title": "Foo",
       "elevation": 0.0,
       "backgroundColor": "#FFFFFF",
       "foregroundColor": "#000000"

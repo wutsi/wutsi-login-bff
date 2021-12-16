@@ -44,7 +44,8 @@ class HomeScreen(
         appBar = AppBar(
             backgroundColor = Theme.WHITE_COLOR,
             foregroundColor = Theme.BLACK_COLOR,
-            elevation = 0.0
+            elevation = 0.0,
+            title = title ?: getText("page.login.app-bar.title"),
         ),
         child = Container(
             alignment = Center,
@@ -60,28 +61,16 @@ class HomeScreen(
                                     child = Icon(
                                         code = icon ?: Theme.ICON_LOGIN,
                                         color = Theme.PRIMARY_COLOR,
-                                        size = Theme.X_LARGE_TEXT_SIZE,
+                                        size = 16.0
                                     ),
                                 ),
                                 Text(
-                                    caption = title ?: getText("page.login.title"),
+                                    caption = subTitle ?: getText("page.login.sub-title"),
                                     alignment = TextAlignment.Center,
-                                    size = Theme.X_LARGE_TEXT_SIZE,
-                                    bold = true,
-                                    color = Theme.PRIMARY_COLOR,
                                 ),
                             ),
                             crossAxisAlignment = center,
                             mainAxisAlignment = MainAxisAlignment.center
-                        )
-                    ),
-                    Container(
-                        alignment = Center,
-                        padding = 10.0,
-                        child = Text(
-                            caption = subTitle ?: getText("page.login.sub-title"),
-                            alignment = TextAlignment.Center,
-                            size = Theme.LARGE_TEXT_SIZE,
                         )
                     ),
                     Container(
