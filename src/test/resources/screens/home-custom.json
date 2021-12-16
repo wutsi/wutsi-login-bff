@@ -70,7 +70,8 @@
                     "name": "pin",
                     "deleteText": "Delete",
                     "maxLength": 6,
-                    "hideText": true
+                    "hideText": true,
+                    "keyboardButtonSize": 50.0
                   },
                   "children": [],
                   "action": {
