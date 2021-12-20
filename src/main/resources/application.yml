@@ -37,6 +37,7 @@ spring:
 wutsi:
   application:
     name: wutsi-login-bff
+  url-builder:
     server-url: http://localhost:${server.port}
   platform:
     security:

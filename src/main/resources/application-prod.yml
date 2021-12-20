@@ -1,6 +1,6 @@
 wutsi:
-  application:
-    server-url: https://wutsi-login-bff-prod.herokuapp.com
   platform:
     security:
       api-key: ${API_KEY}
+  url-builder:
+    server-url: https://wutsi-gateway-prod.herokuapp.com/login  # in PROD, use the API gateway
