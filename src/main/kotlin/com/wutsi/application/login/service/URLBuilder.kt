@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service
 
 @Service
 class URLBuilder(
-    @Value("\${wutsi.url-builder.server-url}") private val serverUrl: String
+    @Value("\${wutsi.application.server-url}") private val serverUrl: String
 ) {
     fun build(path: String) = "$serverUrl/$path"
 }
