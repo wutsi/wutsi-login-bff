@@ -35,10 +35,16 @@ spring:
     default-property-inclusion: non_null
 
 wutsi:
+  toggles:
+    send-sms-code: false      # Send SMS?
+    verification: false       # Validate SMS code?
   application:
     name: wutsi-login-bff
     server-url: http://localhost:${server.port}
   platform:
+    cache:
+      name: ${wutsi.application.name}
+      type: local
     security:
       type: none
       api-key: 0225af2a-3e82-11ec-83e1-06555f6379b7

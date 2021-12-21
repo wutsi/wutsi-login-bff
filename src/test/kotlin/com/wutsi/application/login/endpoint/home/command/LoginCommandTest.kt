@@ -6,7 +6,7 @@ import com.nhaarman.mockitokotlin2.doThrow
 import com.nhaarman.mockitokotlin2.never
 import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import com.wutsi.application.login.AbstractEndpointTest
+import com.wutsi.application.login.endpoint.AbstractEndpointTest
 import com.wutsi.application.login.endpoint.home.dto.LoginRequest
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.enums.ActionType

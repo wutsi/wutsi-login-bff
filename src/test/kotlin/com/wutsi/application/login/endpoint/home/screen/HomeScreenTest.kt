@@ -1,6 +1,6 @@
 package com.wutsi.application.login.endpoint.home.screen
 
-import com.wutsi.application.login.AbstractEndpointTest
+import com.wutsi.application.login.endpoint.AbstractEndpointTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest

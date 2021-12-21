@@ -1,12 +1,14 @@
 package com.wutsi.application.login.endpoint
 
 import com.wutsi.application.login.exception.AuthenticationException
+import com.wutsi.application.login.exception.PinMismatchException
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.Dialog
 import com.wutsi.flutter.sdui.enums.ActionType
 import com.wutsi.flutter.sdui.enums.ActionType.Prompt
 import com.wutsi.flutter.sdui.enums.ActionType.Route
 import com.wutsi.flutter.sdui.enums.DialogType.Error
+import com.wutsi.platform.core.error.exception.WutsiException
 import com.wutsi.platform.core.logging.KVLogger
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.MessageSource
@@ -24,6 +26,10 @@ abstract class AbstractEndpoint {
     fun onAuthenticationException(ex: AuthenticationException) =
         createErrorAction(ex, "message.error.login-failed")
 
+    @ExceptionHandler(PinMismatchException::class)
+    fun onPinMismatchException(e: PinMismatchException): Action =
+        createErrorAction(e, "message.error.pin-mismatch")
+
     private fun createErrorAction(e: Throwable, messageKey: String): Action {
         val action = Action(
             type = Prompt,
@@ -37,27 +43,37 @@ abstract class AbstractEndpoint {
         return action
     }
 
-    private fun log(action: Action, e: Throwable) {
+    protected fun log(action: Action, e: Throwable) {
+        log(e)
         logger.add("action_type", action.type)
         logger.add("action_url", action.url)
         logger.add("action_prompt_type", action.prompt?.type)
-        logger.add("action_prompt_message", action.prompt?.attributes?.get("messages"))
+        logger.add("action_prompt_message", action.prompt?.attributes?.get("message"))
+    }
+
+    protected fun log(e: Throwable) {
         logger.add("exception", e::class.java)
         logger.add("exception_message", e.message)
-
-        if (e is AuthenticationException) {
-            logger.add("error_code", e.error?.code)
+        if (e is WutsiException) {
+            logger.add("error_code", e.error.code)
         }
     }
+
+    protected fun gotoPage(page: Int) = Action(
+        type = ActionType.Page,
+        url = "page:/$page"
+    )
 
     protected fun getText(key: String, args: Array<Any?> = emptyArray()) =
         messages.getMessage(key, args, LocaleContextHolder.getLocale())
 
-    protected fun gotoRoute(path: String, replacement: Boolean? = null) = Action(
-        type = Route,
-        url = "route:$path",
-        replacement = replacement
-    )
+    protected fun gotoRoute(path: String, replacement: Boolean? = null, parameters: Map<String, String>? = null) =
+        Action(
+            type = Route,
+            url = "route:$path",
+            replacement = replacement,
+            parameters = parameters
+        )
 
     protected fun gotoUrl(url: String, type: ActionType) = Action(
         type = type,

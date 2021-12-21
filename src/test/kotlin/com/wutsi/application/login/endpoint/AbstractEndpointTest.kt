@@ -1,12 +1,22 @@
-package com.wutsi.application.login
+package com.wutsi.application.login.endpoint
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.eq
 import com.nhaarman.mockitokotlin2.whenever
+import com.wutsi.application.login.entity.AccountEntity
 import com.wutsi.platform.core.tracing.TracingContext
 import com.wutsi.platform.core.tracing.spring.SpringTracingRequestInterceptor
+import com.wutsi.platform.tenant.WutsiTenantApi
+import com.wutsi.platform.tenant.dto.GetTenantResponse
+import com.wutsi.platform.tenant.dto.Logo
+import com.wutsi.platform.tenant.dto.MobileCarrier
+import com.wutsi.platform.tenant.dto.PhonePrefix
+import com.wutsi.platform.tenant.dto.Tenant
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.cache.Cache
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
 import org.springframework.web.client.RestTemplate
@@ -25,7 +35,13 @@ abstract class AbstractEndpointTest {
     private lateinit var mapper: ObjectMapper
 
     @MockBean
-    private lateinit var tracingContext: TracingContext
+    protected lateinit var tracingContext: TracingContext
+
+    @MockBean
+    private lateinit var tenantApi: WutsiTenantApi
+
+    @MockBean
+    protected lateinit var cache: Cache
 
     @Autowired
     private lateinit var messages: MessageSource
@@ -43,6 +59,45 @@ abstract class AbstractEndpointTest {
 
         rest = RestTemplate()
         rest.interceptors.add(SpringTracingRequestInterceptor(tracingContext))
+
+        val tenant = Tenant(
+            id = 1,
+            name = "test",
+            logos = listOf(
+                Logo(type = "PICTORIAL", url = "http://www.goole.com/images/1.png")
+            ),
+            countries = listOf("CM"),
+            languages = listOf("en", "fr"),
+            currency = "XAF",
+            domainName = "www.wutsi.com",
+            mobileCarriers = listOf(
+                MobileCarrier(
+                    code = "OM",
+                    phonePrefixes = listOf(
+                        PhonePrefix(
+                            country = "CA",
+                            prefixes = listOf("+1")
+                        ),
+                        PhonePrefix(
+                            country = "CM",
+                            prefixes = listOf("+237")
+                        )
+                    )
+                )
+            )
+        )
+        doReturn(GetTenantResponse(tenant)).whenever(tenantApi).getTenant(any())
+
+        val account = AccountEntity(
+            deviceId = DEVICE_ID,
+            phoneNumber = "+15147550011",
+            country = "CA",
+            language = "en",
+            displayName = "Ray Sponsible",
+            pin = "123456",
+            verificationId = 1111
+        )
+        doReturn(account).whenever(cache).get(eq(DEVICE_ID), eq(AccountEntity::class.java))
     }
 
     protected fun assertEndpointEquals(expectedPath: String, url: String) {
