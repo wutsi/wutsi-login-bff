@@ -1,4 +1,4 @@
-package com.wutsi.application.login.endpoint.home.screen
+package com.wutsi.application.login.endpoint.login.screen
 
 import com.nhaarman.mockitokotlin2.any
 import com.nhaarman.mockitokotlin2.doReturn
@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.web.server.LocalServerPort
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-internal class HomeScreenTest : AbstractEndpointTest() {
+internal class LoginScreenTest : AbstractEndpointTest() {
     @LocalServerPort
     public val port: Int = 0
 
@@ -48,17 +48,18 @@ internal class HomeScreenTest : AbstractEndpointTest() {
             country = "CM",
             language = "en",
             status = "ACTIVE",
+            pictureUrl = "https://me.com/1203920.png"
         )
         doReturn(GetAccountResponse(account)).whenever(accountApi).getAccount(any())
     }
 
     @Test
-    fun defaultLoginScreen() = assertEndpointEquals("/screens/home.json", url)
+    fun defaultLoginScreen() = assertEndpointEquals("/screens/login.json", url)
 
     @Test
     fun customLoginScreen() {
         url =
             "http://localhost:$port?screen-id=test&auth=false&phone=+5147580000&title=Foo&sub-title=Yo+Man&icon=i_c_o_n&return-to-route=false&return-url=https://www.google.ca"
-        assertEndpointEquals("/screens/home-custom.json", url)
+        assertEndpointEquals("/screens/login-custom.json", url)
     }
 }

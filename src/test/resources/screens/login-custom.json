@@ -1,7 +1,7 @@
 {
   "type": "Screen",
   "attributes": {
-    "id": "page.login",
+    "id": "test",
     "safe": false
   },
   "children": [
@@ -38,7 +38,7 @@
                         {
                           "type": "Icon",
                           "attributes": {
-                            "code": "eaab",
+                            "code": "i_c_o_n",
                             "size": 16.0,
                             "color": "#1D7EDF"
                           },
@@ -55,7 +55,7 @@
                         {
                           "type": "Text",
                           "attributes": {
-                            "caption": "Enter your PIN",
+                            "caption": "Yo Man",
                             "alignment": "Center"
                           },
                           "children": []
@@ -92,9 +92,9 @@
                           },
                           "children": [
                             {
-                              "type": "Text",
+                              "type": "Image",
                               "attributes": {
-                                "caption": "RS"
+                                "url": "https://me.com/1203920.png"
                               },
                               "children": []
                             }
@@ -152,7 +152,7 @@
                   "children": [],
                   "action": {
                     "type": "Command",
-                    "url": "http://localhost:0/commands/login?auth=true&return-to-route=true&phone=+5147580000"
+                    "url": "http://localhost:0/commands/login?auth=false&return-to-route=false&phone=+5147580000&return-url=https%3A%2F%2Fwww.google.ca"
                   }
                 }
               ]
@@ -165,7 +165,7 @@
   "appBar": {
     "type": "AppBar",
     "attributes": {
-      "title": "Login",
+      "title": "Foo",
       "elevation": 0.0,
       "backgroundColor": "#FFFFFF",
       "foregroundColor": "#000000"

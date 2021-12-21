@@ -1,4 +1,4 @@
-package com.wutsi.application.login.endpoint.home.screen
+package com.wutsi.application.login.endpoint.login.screen
 
 import com.wutsi.application.login.endpoint.AbstractQuery
 import com.wutsi.application.login.endpoint.Page
@@ -38,7 +38,7 @@ import java.net.URLEncoder
 
 @RestController
 @RequestMapping
-class HomeScreen(
+class LoginScreen(
     private val urlBuilder: URLBuilder,
     private val accountApi: WutsiAccountApi,
 ) : AbstractQuery() {
