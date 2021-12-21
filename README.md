@@ -6,29 +6,35 @@
 
 # wutsi-login-bff
 
-`wutsi-login-bff` provide the experience for authenticating users. This BFF can be used for
+`wutsi-login-bff` provide the experience:
 
-- Initial login
+- Signing user
 - Verifying the user's PIN
-
-See [Figma](https://www.figma.com/file/cwHu4uWFhPiQhYdt7AzpCs/Wutsi-eWallet?node-id=0%3A1)
+- Onboard new user
 
 # Screens
 
-## Home Screen
+## Login Screen
+
+This is the endpoint for either signing in users or verifying their PIN.
 
 **Endpoint:** `/`
 
 #### Request Parameters
 
-| Parameters | Default Value| Description |
-|------------|--------------|-------------|
-| phone-number | | **
-REQUIRED**: Phone number of the user to authenticate in [E.164](https://en.wikipedia.org/wiki/E.164) format |
-| screen-id | `page.login` | Screen identifier |
-| icon | | Code of the icon to display in the title. See [Material Icons](https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/icons.dart) |
-| title | | Main title |
-| sub-title | | Sub Title |
-| return-url | | URL where to redirect the user after completing the validation |
-| return-to-route | `true` | Indicate if the return-url is a `Route` or `Command`.
-| auth | `true` | If `true` a new authentication token will be created after validating the user PIN |
+| Parameters      | Default Value | Description                                                                                                                                                 |
+|-----------------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| phone-number    |               | REQUIRED: Phone number of the user to authenticate in [E.164](https://en.wikipedia.org/wiki/E.164) format                                                   |
+| screen-id       | `page.login`  | Screen identifier                                                                                                                                           |
+| icon            |               | Code of the icon to display in the title. See [Material Icons](https://github.com/flutter/flutter/blob/master/packages/flutter/lib/src/material/icons.dart) |
+| title           |               | Main title                                                                                                                                                  |
+| sub-title       |               | Sub Title                                                                                                                                                   |
+| return-url      |               | URL where to redirect the user after completing the validation                                                                                              |
+| return-to-route | `true`        | Indicate if the return-url is a `Route` or `Command`.                                                                                                       |
+| auth            | `true`        | If `true` a new authentication token will be created after validating the user PIN                                                                          |
+
+## Onboard Screen
+
+This is the endpoint onboard new user into the app.
+
+**Endpoint:** `/onboard`
