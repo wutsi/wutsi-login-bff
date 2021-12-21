@@ -108,11 +108,13 @@ class OnboardService(
             logger.add("phone_number", phoneNumber)
             logger.add("country", country)
             logger.add("language", language)
+            logger.add("toggle_send_sms_code", toggleSendSmsCode)
         }
     }
 
     fun verifyCode(request: VerifySmsCodeRequest) {
         logger.add("verification_code", request.code)
+        logger.add("toggle_verify", toggleVerify)
 
         val state = getState()
         if (toggleVerify) {
