@@ -30,6 +30,7 @@ import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.Parameter
 import com.wutsi.platform.core.error.ParameterType
 import com.wutsi.platform.core.error.exception.NotFoundException
+import com.wutsi.platform.core.logging.KVLogger
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -41,6 +42,7 @@ import java.net.URLEncoder
 class LoginScreen(
     private val urlBuilder: URLBuilder,
     private val accountApi: WutsiAccountApi,
+    private val logger: KVLogger,
 ) : AbstractQuery() {
     @PostMapping
     fun index(
@@ -55,6 +57,7 @@ class LoginScreen(
     ): Widget {
         val account = findAccount(phoneNumber)
         val displayName = account.displayName ?: getText("page.login.no-name")
+        logger.add("account_id", account.id)
 
         return Screen(
             id = screenId ?: Page.HOME,
