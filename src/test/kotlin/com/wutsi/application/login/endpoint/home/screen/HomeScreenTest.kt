@@ -1,15 +1,27 @@
 package com.wutsi.application.login.endpoint.home.screen
 
+import com.nhaarman.mockitokotlin2.any
+import com.nhaarman.mockitokotlin2.doReturn
+import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.application.login.endpoint.AbstractEndpointTest
+import com.wutsi.platform.account.WutsiAccountApi
+import com.wutsi.platform.account.dto.Account
+import com.wutsi.platform.account.dto.AccountSummary
+import com.wutsi.platform.account.dto.GetAccountResponse
+import com.wutsi.platform.account.dto.SearchAccountResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.web.server.LocalServerPort
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 internal class HomeScreenTest : AbstractEndpointTest() {
     @LocalServerPort
     public val port: Int = 0
+
+    @MockBean
+    private lateinit var accountApi: WutsiAccountApi
 
     private lateinit var url: String
 
@@ -18,6 +30,26 @@ internal class HomeScreenTest : AbstractEndpointTest() {
         super.setUp()
 
         url = "http://localhost:$port?phone=+5147580000"
+
+        val accounts = listOf(
+            AccountSummary(
+                id = 1,
+                displayName = "Ray Sponsible",
+                country = "CM",
+                language = "en",
+                status = "ACTIVE",
+            )
+        )
+        doReturn(SearchAccountResponse(accounts)).whenever(accountApi).searchAccount(any())
+
+        val account = Account(
+            id = 1,
+            displayName = "Ray Sponsible",
+            country = "CM",
+            language = "en",
+            status = "ACTIVE",
+        )
+        doReturn(GetAccountResponse(account)).whenever(accountApi).getAccount(any())
     }
 
     @Test

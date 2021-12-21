@@ -19,7 +19,7 @@
               "type": "Container",
               "attributes": {
                 "alignment": "Center",
-                "padding": 10.0
+                "padding": 5.0
               },
               "children": [
                 {
@@ -47,12 +47,89 @@
                       ]
                     },
                     {
-                      "type": "Text",
+                      "type": "Container",
                       "attributes": {
-                        "caption": "Yo Man",
-                        "alignment": "Center"
+                        "padding": 5.0
                       },
-                      "children": []
+                      "children": [
+                        {
+                          "type": "Text",
+                          "attributes": {
+                            "caption": "Yo Man",
+                            "alignment": "Center"
+                          },
+                          "children": []
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "type": "Container",
+              "attributes": {
+                "alignment": "Center",
+                "padding": 5.0
+              },
+              "children": [
+                {
+                  "type": "Row",
+                  "attributes": {
+                    "mainAxisAlignment": "center"
+                  },
+                  "children": [
+                    {
+                      "type": "Container",
+                      "attributes": {
+                        "padding": 5.0
+                      },
+                      "children": [
+                        {
+                          "type": "CircleAvatar",
+                          "attributes": {
+                            "radius": 16.0
+                          },
+                          "children": [
+                            {
+                              "type": "Text",
+                              "attributes": {
+                                "caption": "RS"
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "type": "Container",
+                      "attributes": {
+                        "padding": 5.0
+                      },
+                      "children": [
+                        {
+                          "type": "Column",
+                          "attributes": {},
+                          "children": [
+                            {
+                              "type": "Text",
+                              "attributes": {
+                                "caption": "Ray Sponsible",
+                                "bold": true
+                              },
+                              "children": []
+                            },
+                            {
+                              "type": "Text",
+                              "attributes": {
+                                "caption": ""
+                              },
+                              "children": []
+                            }
+                          ]
+                        }
+                      ]
                     }
                   ]
                 }

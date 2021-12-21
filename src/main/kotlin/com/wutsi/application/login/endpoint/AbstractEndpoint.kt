@@ -1,5 +1,6 @@
 package com.wutsi.application.login.endpoint
 
+import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.wutsi.application.login.exception.AuthenticationException
 import com.wutsi.application.login.exception.PinMismatchException
 import com.wutsi.flutter.sdui.Action
@@ -21,6 +22,9 @@ abstract class AbstractEndpoint {
 
     @Autowired
     private lateinit var logger: KVLogger
+
+    @Autowired
+    private lateinit var phoneNumberUtil: PhoneNumberUtil
 
     @ExceptionHandler(AuthenticationException::class)
     fun onAuthenticationException(ex: AuthenticationException) =
@@ -79,4 +83,12 @@ abstract class AbstractEndpoint {
         type = type,
         url = url
     )
+
+    protected fun formattedPhoneNumber(phoneNumber: String?, country: String? = null): String? {
+        if (phoneNumber == null)
+            return null
+
+        val number = phoneNumberUtil.parse(phoneNumber, country ?: "")
+        return phoneNumberUtil.format(number, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL)
+    }
 }
