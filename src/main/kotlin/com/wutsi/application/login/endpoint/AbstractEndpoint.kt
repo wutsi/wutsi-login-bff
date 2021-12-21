@@ -79,9 +79,10 @@ abstract class AbstractEndpoint {
             parameters = parameters
         )
 
-    protected fun gotoUrl(url: String, type: ActionType) = Action(
+    protected fun gotoUrl(url: String, type: ActionType, replacement: Boolean? = null) = Action(
         type = type,
-        url = url
+        url = url,
+        replacement = replacement
     )
 
     protected fun formattedPhoneNumber(phoneNumber: String?, country: String? = null): String? {

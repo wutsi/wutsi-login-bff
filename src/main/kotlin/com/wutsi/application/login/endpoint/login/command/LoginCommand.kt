@@ -38,7 +38,7 @@ class LoginCommand(
             .ok()
             .headers(headers)
             .body(
-                returnUrl?.let { gotoUrl(it, actionType(returnToRoute)) }
+                returnUrl?.let { gotoUrl(it, actionType(returnToRoute), if (returnToRoute) true else null) }
                     ?: gotoRoute("/", true)
             )
     }
