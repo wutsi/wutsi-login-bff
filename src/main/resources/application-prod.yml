@@ -1,6 +1,9 @@
 wutsi:
   application:
     server-url: https://wutsi-gateway-prod.herokuapp.com/login  # in PROD, use the API gateway
+  toggles:
+    send-sms-code: true
+    verification: true
   platform:
     security:
       api-key: ${API_KEY}

@@ -1,6 +1,9 @@
 wutsi:
   application:
     server-url: https://wutsi-gateway-test.herokuapp.com/login  # in TEST, use the API gateway
+  toggles:
+    send-sms-code: true
+    verification: true
   platform:
     security:
       api-key: ${API_KEY}
