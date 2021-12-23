@@ -1,6 +1,7 @@
 package com.wutsi.application.login.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.wutsi.platform.core.security.feign.FeignAuthorizationRequestInterceptor
 import com.wutsi.platform.core.tracing.feign.FeignTracingRequestInterceptor
 import com.wutsi.platform.security.Environment.PRODUCTION
 import com.wutsi.platform.security.Environment.SANDBOX
@@ -13,6 +14,7 @@ import org.springframework.core.env.Profiles
 
 @Configuration
 public class SecurityApiConfiguration(
+    private val authorizationRequestInterceptor: FeignAuthorizationRequestInterceptor,
     private val tracingRequestInterceptor: FeignTracingRequestInterceptor,
     private val mapper: ObjectMapper,
     private val env: Environment
@@ -23,6 +25,7 @@ public class SecurityApiConfiguration(
             env = environment(),
             mapper = mapper,
             interceptors = listOf(
+                authorizationRequestInterceptor,
                 tracingRequestInterceptor,
             )
         )
