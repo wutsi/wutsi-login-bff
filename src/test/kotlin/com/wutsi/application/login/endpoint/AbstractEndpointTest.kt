@@ -8,6 +8,8 @@ import com.nhaarman.mockitokotlin2.whenever
 import com.wutsi.application.login.entity.AccountEntity
 import com.wutsi.platform.core.tracing.TracingContext
 import com.wutsi.platform.core.tracing.spring.SpringTracingRequestInterceptor
+import com.wutsi.platform.security.WutsiSecurityApi
+import com.wutsi.platform.security.dto.AuthenticationResponse
 import com.wutsi.platform.tenant.WutsiTenantApi
 import com.wutsi.platform.tenant.dto.GetTenantResponse
 import com.wutsi.platform.tenant.dto.Logo
@@ -43,10 +45,15 @@ abstract class AbstractEndpointTest {
     @MockBean
     protected lateinit var cache: Cache
 
+    @MockBean
+    protected lateinit var securityApi: WutsiSecurityApi
+
     @Autowired
     private lateinit var messages: MessageSource
 
     protected lateinit var rest: RestTemplate
+
+    protected lateinit var accessToken: String
 
     lateinit var traceId: String
 
@@ -98,6 +105,12 @@ abstract class AbstractEndpointTest {
             verificationId = 1111
         )
         doReturn(account).whenever(cache).get(eq(DEVICE_ID), eq(AccountEntity::class.java))
+
+        accessToken = UUID.randomUUID().toString()
+        val authResponse = AuthenticationResponse(
+            accessToken = accessToken
+        )
+        doReturn(authResponse).whenever(securityApi).authenticate(any())
     }
 
     protected fun assertEndpointEquals(expectedPath: String, url: String) {

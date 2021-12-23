@@ -11,6 +11,7 @@ import com.wutsi.platform.core.logging.KVLogger
 import com.wutsi.platform.security.WutsiSecurityApi
 import com.wutsi.platform.security.dto.AuthenticationRequest
 import feign.FeignException
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,7 +20,8 @@ class LoginService(
     private val securityApi: WutsiSecurityApi,
     private val logger: KVLogger,
     private val mapper: ObjectMapper,
-    private val applicationProvider: ApplicationProvider
+
+    @Value("\${wutsi.platform.security.api-key}") private val apiKey: String,
 ) {
     fun login(phoneNumber: String, auth: Boolean, request: LoginRequest): String? {
         logger.add("phone_number", phoneNumber)
@@ -70,10 +72,10 @@ class LoginService(
             AuthenticationRequest(
                 type = "runas",
                 phoneNumber = phoneNumber,
-                apiKey = applicationProvider.get().apiKey
+                apiKey = apiKey
             )
         ).accessToken
-        logger.add("access_token", "******")
+        logger.add("access_token", "***")
 
         return accessToken
     }

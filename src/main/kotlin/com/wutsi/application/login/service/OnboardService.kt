@@ -12,6 +12,7 @@ import com.wutsi.platform.account.WutsiAccountApi
 import com.wutsi.platform.account.dto.AccountSummary
 import com.wutsi.platform.account.dto.CreateAccountRequest
 import com.wutsi.platform.account.dto.SearchAccountRequest
+import com.wutsi.platform.account.error.ErrorURN
 import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.ErrorResponse
 import com.wutsi.platform.core.error.Parameter
@@ -37,7 +38,6 @@ class OnboardService(
     private val accountApi: WutsiAccountApi,
     private val securityApi: WutsiSecurityApi,
     private val logger: KVLogger,
-    private val applicationProvider: ApplicationProvider,
     private val mapper: ObjectMapper,
     private val tracingContext: RequestTracingContext,
     private val countryDetector: CountryDetector,
@@ -45,9 +45,10 @@ class OnboardService(
 
     @Value("\${wutsi.toggles.send-sms-code}") private val toggleSendSmsCode: Boolean,
     @Value("\${wutsi.toggles.verification}") private val toggleVerify: Boolean,
+    @Value("\${wutsi.platform.security.api-key}") private val apiKey: String,
 ) {
     companion object {
-        val ACCOUNT_ALREADY_ASSIGNED: String = URN.of("error", "account", "phone-number-already-assigned").value
+        val ACCOUNT_ALREADY_ASSIGNED: String = ErrorURN.PHONE_NUMBER_ALREADY_ASSIGNED.urn
         val DEVICE_NOT_FOUND: String = URN.of("error", "app-onboard", "device-not-found").value
     }
 
@@ -196,10 +197,10 @@ class OnboardService(
             AuthenticationRequest(
                 type = "runas",
                 phoneNumber = state.phoneNumber,
-                apiKey = applicationProvider.get().apiKey
+                apiKey = apiKey
             )
         ).accessToken
-        logger.add("access_token", "******")
+        logger.add("access_token", "***")
 
         return accessToken
     }

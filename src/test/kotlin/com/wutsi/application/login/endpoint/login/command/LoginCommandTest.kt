@@ -14,10 +14,6 @@ import com.wutsi.flutter.sdui.enums.DialogType
 import com.wutsi.platform.account.WutsiAccountApi
 import com.wutsi.platform.account.dto.AccountSummary
 import com.wutsi.platform.account.dto.SearchAccountResponse
-import com.wutsi.platform.security.WutsiSecurityApi
-import com.wutsi.platform.security.dto.Application
-import com.wutsi.platform.security.dto.AuthenticationResponse
-import com.wutsi.platform.security.dto.GetApplicationResponse
 import feign.FeignException
 import feign.Request
 import feign.Request.HttpMethod.POST
@@ -32,7 +28,6 @@ import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.boot.web.server.LocalServerPort
 import java.net.URLEncoder
 import java.nio.charset.Charset
-import java.util.UUID
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 internal class LoginCommandTest : AbstractEndpointTest() {
@@ -40,23 +35,13 @@ internal class LoginCommandTest : AbstractEndpointTest() {
     val port: Int = 0
 
     @MockBean
-    private lateinit var securityApi: WutsiSecurityApi
-
-    @MockBean
     private lateinit var accountApi: WutsiAccountApi
 
-    private lateinit var accessToken: String
     private lateinit var url: String
 
     @BeforeEach
     override fun setUp() {
         super.setUp()
-
-        val app = Application()
-        doReturn(GetApplicationResponse(app)).whenever(securityApi).application(any())
-
-        accessToken = UUID.randomUUID().toString()
-        doReturn(AuthenticationResponse(accessToken = accessToken)).whenever(securityApi).authenticate(any())
 
         url = "http://localhost:$port/commands/login?phone=" + URLEncoder.encode(PHONE_NUMBER, "utf-8")
     }
