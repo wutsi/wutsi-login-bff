@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service
 class BffTokenProvider(
     private val securityApi: WutsiSecurityApi,
 
-    @Value("\${wutsi.platform.security.api-key}") val apiKey: String
+    @Value("\${wutsi.platform.security.api-key}") private val apiKey: String
 ) : TokenProvider {
     companion object {
         private val LOGGER = LoggerFactory.getLogger(BffTokenProvider::class.java)
