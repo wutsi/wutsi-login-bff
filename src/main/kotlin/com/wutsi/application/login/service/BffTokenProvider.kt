@@ -8,13 +8,13 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 
 @Service
-class LoginBffTokenProvider(
+class BffTokenProvider(
     private val securityApi: WutsiSecurityApi,
 
     @Value("\${wutsi.platform.security.api-key}") val apiKey: String
 ) : TokenProvider {
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(LoginBffTokenProvider::class.java)
+        private val LOGGER = LoggerFactory.getLogger(BffTokenProvider::class.java)
     }
 
     private var token: String? = null

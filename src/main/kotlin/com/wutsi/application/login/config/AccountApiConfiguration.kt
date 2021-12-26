@@ -1,7 +1,7 @@
 package com.wutsi.application.login.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.wutsi.application.login.service.LoginBffTokenProvider
+import com.wutsi.application.login.service.BffTokenProvider
 import com.wutsi.platform.account.Environment.PRODUCTION
 import com.wutsi.platform.account.Environment.SANDBOX
 import com.wutsi.platform.account.WutsiAccountApi
@@ -15,7 +15,7 @@ import org.springframework.core.env.Profiles
 
 @Configuration
 public class AccountApiConfiguration(
-    private val tokenProvider: LoginBffTokenProvider,
+    private val tokenProvider: BffTokenProvider,
     private val tracingRequestInterceptor: FeignTracingRequestInterceptor,
     private val mapper: ObjectMapper,
     private val env: Environment
