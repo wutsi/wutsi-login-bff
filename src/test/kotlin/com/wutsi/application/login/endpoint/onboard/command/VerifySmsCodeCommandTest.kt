@@ -75,7 +75,7 @@ internal class VerifySmsCodeCommandTest : AbstractEndpointTest() {
         val action = response.body
         assertEquals(Route, action?.type)
         assertEquals("route:/login", action?.url)
-        assertEquals("You have an Wallet", action?.parameters?.get("title"))
+        assertEquals(getText("page.login.title"), action?.parameters?.get("title"))
         assertEquals(getText("page.login.sub-title"), action?.parameters?.get("sub-title"))
         assertNull(action?.prompt)
     }
