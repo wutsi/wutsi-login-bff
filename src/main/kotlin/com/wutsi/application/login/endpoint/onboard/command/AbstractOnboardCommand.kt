@@ -24,7 +24,7 @@ abstract class AbstractOnboardCommand : AbstractCommand() {
         val state = service.getState()
         val action = gotoUrl(
             url = urlBuilder.build(
-                "/login" +
+                "login" +
                     "?title=" + encodeURLParam(getText("page.login.title")) +
                     "&sub-title=" + encodeURLParam(getText("page.login.sub-title")) +
                     "&phone=" + encodeURLParam(state.phoneNumber)
