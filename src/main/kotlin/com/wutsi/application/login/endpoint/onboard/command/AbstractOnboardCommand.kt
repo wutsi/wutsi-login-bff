@@ -28,7 +28,7 @@ abstract class AbstractOnboardCommand : AbstractCommand() {
                     "&sub-title=" + encodeURLParam(getText("page.login.sub-title")) +
                     "&phone=" + encodeURLParam(state.phoneNumber) +
                     "&return-to-route=true" +
-                    "&return-url=" + encodeURLParam("/")
+                    "&return-url=" + encodeURLParam("route:/")
             ),
             type = ActionType.Route,
             replacement = true
