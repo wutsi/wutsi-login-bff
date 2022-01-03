@@ -56,8 +56,7 @@ abstract class AbstractEndpoint {
     }
 
     protected fun log(e: Throwable) {
-        logger.add("exception", e::class.java)
-        logger.add("exception_message", e.message)
+        logger.setException(e)
         if (e is WutsiException) {
             logger.add("error_code", e.error.code)
         }
