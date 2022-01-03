@@ -3,7 +3,9 @@ package com.wutsi.application.login.endpoint.onboard.command
 import com.wutsi.application.login.endpoint.AbstractCommand
 import com.wutsi.application.login.exception.PhoneAlreadyAssignedException
 import com.wutsi.application.login.service.OnboardService
+import com.wutsi.application.login.service.URLBuilder
 import com.wutsi.flutter.sdui.Action
+import com.wutsi.flutter.sdui.enums.ActionType
 import com.wutsi.platform.core.error.exception.NotFoundException
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
@@ -14,17 +16,21 @@ abstract class AbstractOnboardCommand : AbstractCommand() {
     @Autowired
     protected lateinit var service: OnboardService
 
+    @Autowired
+    protected lateinit var urlBuilder: URLBuilder
+
     @ExceptionHandler(PhoneAlreadyAssignedException::class)
     fun onPhoneAlreadyAssignedException(e: PhoneAlreadyAssignedException): Action {
         val state = service.getState()
-        val action = gotoRoute(
-            path = "/login",
-            replacement = true,
-            parameters = mapOf(
-                "title" to getText("page.login.title"),
-                "sub-title" to getText("page.login.sub-title"),
-                "phone" to state.phoneNumber
-            )
+        val action = gotoUrl(
+            url = urlBuilder.build(
+                "/login" +
+                    "?title=" + encodeURLParam(getText("page.login.title")) +
+                    "&sub-title=" + encodeURLParam(getText("page.login.sub-title")) +
+                    "&phone=" + encodeURLParam(state.phoneNumber)
+            ),
+            type = ActionType.Route,
+            replacement = true
         )
         log(action, e)
         return action
