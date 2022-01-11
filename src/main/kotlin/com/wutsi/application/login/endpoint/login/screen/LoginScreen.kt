@@ -2,9 +2,9 @@ package com.wutsi.application.login.endpoint.login.screen
 
 import com.wutsi.application.login.endpoint.AbstractQuery
 import com.wutsi.application.login.endpoint.Page
-import com.wutsi.application.login.endpoint.Theme
-import com.wutsi.application.login.service.URLBuilder
-import com.wutsi.application.login.util.StringUtil.initials
+import com.wutsi.application.shared.Theme
+import com.wutsi.application.shared.service.StringUtil.initials
+import com.wutsi.application.shared.service.URLBuilder
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.AppBar
 import com.wutsi.flutter.sdui.CircleAvatar
@@ -62,8 +62,8 @@ class LoginScreen(
         return Screen(
             id = screenId ?: Page.HOME,
             appBar = AppBar(
-                backgroundColor = Theme.WHITE_COLOR,
-                foregroundColor = Theme.BLACK_COLOR,
+                backgroundColor = Theme.COLOR_WHITE,
+                foregroundColor = Theme.COLOR_BLACK,
                 elevation = 0.0,
                 title = title ?: getText("page.login.app-bar.title"),
             ),
@@ -80,7 +80,7 @@ class LoginScreen(
                                         padding = 5.0,
                                         child = Icon(
                                             code = icon ?: Theme.ICON_LOGIN,
-                                            color = Theme.PRIMARY_COLOR,
+                                            color = Theme.COLOR_PRIMARY,
                                             size = 16.0
                                         ),
                                     ),

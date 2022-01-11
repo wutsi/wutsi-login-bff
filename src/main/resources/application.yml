@@ -35,9 +35,6 @@ spring:
     default-property-inclusion: non_null
 
 wutsi:
-  toggles:
-    send-sms-code: false      # Send SMS?
-    verification: false       # Validate SMS code?
   application:
     name: wutsi-login-bff
     server-url: http://localhost:${server.port}
@@ -54,8 +51,6 @@ wutsi:
         type: env
     tracing:
       client-id: ${wutsi.application.name}
-      device-id-provider:
-        type: header
 
 logging:
   level:

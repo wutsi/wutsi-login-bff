@@ -1,4 +1,4 @@
-package com.wutsi.application.login.service
+package com.wutsi.application.shared.service
 
 import org.springframework.web.servlet.LocaleResolver
 import java.util.Locale

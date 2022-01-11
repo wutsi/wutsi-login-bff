@@ -1,9 +1,9 @@
 package com.wutsi.application.login.endpoint.onboard.page
 
 import com.wutsi.application.login.endpoint.Page
-import com.wutsi.application.login.endpoint.Theme
-import com.wutsi.application.login.service.TenantProvider
-import com.wutsi.application.login.service.URLBuilder
+import com.wutsi.application.shared.Theme
+import com.wutsi.application.shared.service.TenantProvider
+import com.wutsi.application.shared.service.URLBuilder
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.Button
 import com.wutsi.flutter.sdui.Column
@@ -16,7 +16,7 @@ import com.wutsi.flutter.sdui.Widget
 import com.wutsi.flutter.sdui.enums.ActionType.Command
 import com.wutsi.flutter.sdui.enums.Alignment.Center
 import com.wutsi.flutter.sdui.enums.ButtonType
-import com.wutsi.flutter.sdui.enums.InputType.Number
+import com.wutsi.flutter.sdui.enums.InputType
 import com.wutsi.flutter.sdui.enums.InputType.Submit
 import com.wutsi.flutter.sdui.enums.TextAlignment
 import org.springframework.web.bind.annotation.PostMapping
@@ -55,8 +55,8 @@ class VerificationPage(
                         child = Text(
                             caption = getText("page.verification.title"),
                             alignment = TextAlignment.Center,
-                            size = Theme.LARGE_TEXT_SIZE,
-                            color = Theme.PRIMARY_COLOR,
+                            size = Theme.TEXT_SIZE_LARGE,
+                            color = Theme.COLOR_PRIMARY,
                             bold = true
                         )
                     ),
@@ -82,7 +82,7 @@ class VerificationPage(
                                 padding = 10.0,
                                 child = Input(
                                     name = "code",
-                                    type = Number,
+                                    type = InputType.Number,
                                     caption = getText("page.verification.field.code.caption"),
                                     required = true,
                                     hint = getText("page.verification.field.code.hint"),

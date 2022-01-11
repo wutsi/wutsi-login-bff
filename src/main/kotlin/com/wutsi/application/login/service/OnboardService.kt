@@ -12,7 +12,6 @@ import com.wutsi.platform.account.WutsiAccountApi
 import com.wutsi.platform.account.dto.AccountSummary
 import com.wutsi.platform.account.dto.CreateAccountRequest
 import com.wutsi.platform.account.dto.SearchAccountRequest
-import com.wutsi.platform.account.error.ErrorURN
 import com.wutsi.platform.core.error.Error
 import com.wutsi.platform.core.error.ErrorResponse
 import com.wutsi.platform.core.error.Parameter
@@ -42,13 +41,13 @@ class OnboardService(
     private val tracingContext: RequestTracingContext,
     private val countryDetector: CountryDetector,
     private val cache: Cache,
+    private val togglesProvider: TogglesProvider,
 
-    @Value("\${wutsi.toggles.send-sms-code}") private val toggleSendSmsCode: Boolean,
-    @Value("\${wutsi.toggles.verification}") private val toggleVerify: Boolean,
     @Value("\${wutsi.platform.security.api-key}") private val apiKey: String,
 ) {
     companion object {
-        val ACCOUNT_ALREADY_ASSIGNED: String = ErrorURN.PHONE_NUMBER_ALREADY_ASSIGNED.urn
+        val ACCOUNT_ALREADY_ASSIGNED: String =
+            com.wutsi.platform.account.error.ErrorURN.PHONE_NUMBER_ALREADY_ASSIGNED.urn
         val DEVICE_NOT_FOUND: String = URN.of("error", "app-onboard", "device-not-found").value
     }
 
@@ -82,6 +81,7 @@ class OnboardService(
         val phoneNumber = request.phoneNumber
         val country = countryDetector.detect(phoneNumber)
         val language = LocaleContextHolder.getLocale().language
+        val toggleSendSmsCode = togglesProvider.isSendSmsEnabled(phoneNumber)
         try {
             // Send verification
             val verificationId: Long = if (toggleSendSmsCode)
@@ -114,10 +114,11 @@ class OnboardService(
     }
 
     fun verifyCode(request: VerifySmsCodeRequest) {
+        val state = getState()
+        val toggleVerify = togglesProvider.isVerifySmsCodeEnabled(state.phoneNumber)
         logger.add("verification_code", request.code)
         logger.add("toggle_verify", toggleVerify)
 
-        val state = getState()
         if (toggleVerify) {
             smsApi.validateVerification(
                 id = state.verificationId,

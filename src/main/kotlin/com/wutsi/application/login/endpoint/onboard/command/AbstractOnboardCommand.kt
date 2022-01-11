@@ -3,7 +3,7 @@ package com.wutsi.application.login.endpoint.onboard.command
 import com.wutsi.application.login.endpoint.AbstractCommand
 import com.wutsi.application.login.exception.PhoneAlreadyAssignedException
 import com.wutsi.application.login.service.OnboardService
-import com.wutsi.application.login.service.URLBuilder
+import com.wutsi.application.shared.service.URLBuilder
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.enums.ActionType
 import com.wutsi.platform.core.error.exception.NotFoundException

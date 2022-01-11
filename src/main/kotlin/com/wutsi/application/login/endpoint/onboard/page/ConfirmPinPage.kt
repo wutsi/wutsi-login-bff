@@ -1,8 +1,8 @@
 package com.wutsi.application.login.endpoint.onboard.page
 
 import com.wutsi.application.login.endpoint.Page
-import com.wutsi.application.login.endpoint.Theme
-import com.wutsi.application.login.service.URLBuilder
+import com.wutsi.application.shared.Theme
+import com.wutsi.application.shared.service.URLBuilder
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.Button
 import com.wutsi.flutter.sdui.Column
@@ -34,8 +34,8 @@ public class ConfirmPinPage(
                     child = Text(
                         caption = getText("page.confirm-pin.title"),
                         alignment = TextAlignment.Center,
-                        size = Theme.LARGE_TEXT_SIZE,
-                        color = Theme.PRIMARY_COLOR,
+                        size = Theme.TEXT_SIZE_LARGE,
+                        color = Theme.COLOR_PRIMARY,
                         bold = true
                     )
                 ),

@@ -1,4 +1,4 @@
-package com.wutsi.application.login.service
+package com.wutsi.application.shared.service
 
 import com.wutsi.platform.core.tracing.TracingContext
 import com.wutsi.platform.tenant.WutsiTenantApi

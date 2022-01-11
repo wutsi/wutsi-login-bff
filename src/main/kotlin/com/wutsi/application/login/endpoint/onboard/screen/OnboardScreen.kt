@@ -1,7 +1,7 @@
 package com.wutsi.application.login.endpoint.onboard.screen
 
 import com.wutsi.application.login.endpoint.AbstractQuery
-import com.wutsi.application.login.service.URLBuilder
+import com.wutsi.application.shared.service.URLBuilder
 import com.wutsi.flutter.sdui.Page
 import com.wutsi.flutter.sdui.PageView
 import com.wutsi.flutter.sdui.Screen
