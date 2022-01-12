@@ -8,6 +8,7 @@ import com.wutsi.application.login.endpoint.onboard.dto.VerifySmsCodeRequest
 import com.wutsi.application.login.entity.AccountEntity
 import com.wutsi.application.login.exception.PhoneAlreadyAssignedException
 import com.wutsi.application.login.exception.PinMismatchException
+import com.wutsi.application.shared.service.TogglesProvider
 import com.wutsi.platform.account.WutsiAccountApi
 import com.wutsi.platform.account.dto.AccountSummary
 import com.wutsi.platform.account.dto.CreateAccountRequest
@@ -81,7 +82,7 @@ class OnboardService(
         val phoneNumber = request.phoneNumber
         val country = countryDetector.detect(phoneNumber)
         val language = LocaleContextHolder.getLocale().language
-        val toggleSendSmsCode = togglesProvider.isSendSmsEnabled(phoneNumber)
+        val toggleSendSmsCode = togglesProvider.isSendSmsCodeEnabled(phoneNumber)
         try {
             // Send verification
             val verificationId: Long = if (toggleSendSmsCode)
