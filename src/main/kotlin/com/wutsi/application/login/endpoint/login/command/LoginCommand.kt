@@ -3,6 +3,7 @@ package com.wutsi.application.login.endpoint.login.command
 import com.wutsi.application.login.endpoint.AbstractCommand
 import com.wutsi.application.login.endpoint.login.dto.LoginRequest
 import com.wutsi.application.login.service.LoginService
+import com.wutsi.application.shared.service.PhoneUtil
 import com.wutsi.flutter.sdui.Action
 import com.wutsi.flutter.sdui.enums.ActionType
 import org.springframework.http.HttpHeaders
@@ -27,7 +28,7 @@ class LoginCommand(
         @RequestParam(name = "return-to-route", required = false, defaultValue = "true") returnToRoute: Boolean = true,
         @Valid @RequestBody request: LoginRequest
     ): ResponseEntity<Action> {
-        val accessToken = service.login(service.sanitizePhoneNumber(phoneNumber), auth, request)
+        val accessToken = service.login(PhoneUtil.sanitize(phoneNumber), auth, request)
 
         val headers = HttpHeaders()
         if (accessToken != null) {

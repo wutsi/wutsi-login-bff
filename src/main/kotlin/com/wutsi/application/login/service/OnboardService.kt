@@ -65,102 +65,113 @@ class OnboardService(
                 )
             )
 
-    fun save(state: AccountEntity) {
+    private fun save(state: AccountEntity): AccountEntity {
         cache.put(tracingContext.deviceId(), state)
+        return state
     }
 
     fun resendSmsCode() {
         val state = getState()
-        sendSmsCode(
-            SendSmsCodeRequest(
-                phoneNumber = state.phoneNumber
+        try {
+            sendSmsCode(
+                SendSmsCodeRequest(state.phoneNumber)
+            )
+        } finally {
+            log(state)
+        }
+    }
+
+    fun sendSmsCode(request: SendSmsCodeRequest) {
+        val state = sendSmsCode(request.phoneNumber)
+        log(state)
+    }
+
+    private fun sendSmsCode(phoneNumber: String): AccountEntity {
+        val country = countryDetector.detect(phoneNumber)
+        val language = LocaleContextHolder.getLocale().language
+        val toggleSendSmsCode = togglesProvider.isSendSmsCodeEnabled(phoneNumber)
+
+        // Send verification
+        logger.add("toggle_send_sms_code", toggleSendSmsCode)
+        val verificationId: Long = if (toggleSendSmsCode)
+            smsApi.sendVerification(
+                SendVerificationRequest(
+                    phoneNumber = phoneNumber,
+                    language = language
+                )
+            ).id
+        else
+            -1
+
+        // Update state
+        return save(
+            AccountEntity(
+                deviceId = tracingContext.deviceId(),
+                phoneNumber = phoneNumber,
+                country = country,
+                language = language,
+                verificationId = verificationId
             )
         )
     }
 
-    fun sendSmsCode(request: SendSmsCodeRequest) {
-        val phoneNumber = request.phoneNumber
-        val country = countryDetector.detect(phoneNumber)
-        val language = LocaleContextHolder.getLocale().language
-        val toggleSendSmsCode = togglesProvider.isSendSmsCodeEnabled(phoneNumber)
-        try {
-            // Send verification
-            val verificationId: Long = if (toggleSendSmsCode)
-                smsApi.sendVerification(
-                    SendVerificationRequest(
-                        phoneNumber = phoneNumber,
-                        language = language
-                    )
-                ).id
-            else
-                -1
-            logger.add("verification_id", verificationId)
-
-            // Update state
-            save(
-                AccountEntity(
-                    deviceId = tracingContext.deviceId(),
-                    phoneNumber = phoneNumber,
-                    country = country,
-                    language = language,
-                    verificationId = verificationId
-                )
-            )
-        } finally {
-            logger.add("phone_number", phoneNumber)
-            logger.add("country", country)
-            logger.add("language", language)
-            logger.add("toggle_send_sms_code", toggleSendSmsCode)
-        }
-    }
-
     fun verifyCode(request: VerifySmsCodeRequest) {
         val state = getState()
-        val toggleVerify = togglesProvider.isVerifySmsCodeEnabled(state.phoneNumber)
-        logger.add("verification_code", request.code)
-        logger.add("toggle_verify", toggleVerify)
+        try {
+            val toggleVerify = togglesProvider.isVerifySmsCodeEnabled(state.phoneNumber)
+            logger.add("toggle_verify", toggleVerify)
 
-        if (toggleVerify) {
-            smsApi.validateVerification(
-                id = state.verificationId,
-                code = request.code
-            )
-        }
+            if (toggleVerify) {
+                smsApi.validateVerification(
+                    id = state.verificationId,
+                    code = request.code
+                )
+            }
 
-        if (findAccount(state) != null) {
-            throw PhoneAlreadyAssignedException()
+            if (findAccount(state) != null) {
+                throw PhoneAlreadyAssignedException()
+            }
+        } finally {
+            log(state)
         }
     }
 
     fun createProfile(request: SaveProfileRequest) {
-        logger.add("display_name", request.displayName)
-
-        // Update
         val state = getState()
-        state.displayName = request.displayName
-        save(state)
+        try {
+            state.displayName = request.displayName
+            save(state)
+        } finally {
+            log(state)
+        }
     }
 
     fun savePin(request: SavePinRequest) {
-        logger.add("pin", "***")
-
         val state = getState()
-        state.pin = request.pin
-        save(state)
+        try {
+            state.pin = request.pin
+            save(state)
+        } finally {
+            log(state)
+        }
     }
 
     fun confirmPin(request: SavePinRequest) {
-        logger.add("pin", "***")
-
         val state = getState()
-        if (state.pin != request.pin)
-            throw PinMismatchException()
+        try {
+            if (state.pin != request.pin)
+                throw PinMismatchException()
+        } finally {
+            log(state)
+        }
     }
 
     fun createWallet(): String {
+        val state = getState()
         try {
-            val state = getState()
-            createAccount(state)
+            val accountId = createAccount(state)
+            logger.add("account_id", accountId)
+
             return authenticate(state)
         } catch (ex: FeignException) {
             val response = toErrorResponse(ex)
@@ -168,7 +179,20 @@ class OnboardService(
                 throw PhoneAlreadyAssignedException()
             }
             throw ex
+        } finally {
+            log(state)
         }
+    }
+
+    private fun log(state: AccountEntity) {
+        logger.add("phone_number", state.phoneNumber)
+        logger.add("display_name", state.displayName)
+        logger.add("country", state.country)
+        logger.add("account_id", state.accountId)
+        logger.add("language", state.language)
+        logger.add("payment_phone_number", state.paymentPhoneNumber)
+        logger.add("verification_id", state.verificationId)
+        logger.add("verification_id", state.pin?.let { "***" })
     }
 
     private fun findAccount(state: AccountEntity): AccountSummary? {
@@ -179,8 +203,8 @@ class OnboardService(
             null
     }
 
-    private fun createAccount(state: AccountEntity): Long {
-        val accountId = accountApi.createAccount(
+    private fun createAccount(state: AccountEntity): Long =
+        accountApi.createAccount(
             CreateAccountRequest(
                 phoneNumber = state.phoneNumber,
                 displayName = state.displayName,
@@ -190,22 +214,15 @@ class OnboardService(
                 addPaymentMethod = true
             )
         ).id
-        logger.add("account_id", accountId)
-        return accountId
-    }
 
-    private fun authenticate(state: AccountEntity): String {
-        val accessToken = securityApi.authenticate(
+    private fun authenticate(state: AccountEntity): String =
+        securityApi.authenticate(
             AuthenticationRequest(
                 type = "runas",
                 phoneNumber = state.phoneNumber,
                 apiKey = apiKey
             )
         ).accessToken
-        logger.add("access_token", "***")
-
-        return accessToken
-    }
 
     private fun toErrorResponse(ex: FeignException): ErrorResponse {
         val buff = ex.responseBody().get()

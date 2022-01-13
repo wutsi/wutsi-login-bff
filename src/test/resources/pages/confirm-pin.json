@@ -21,7 +21,7 @@
                 "caption": "Confirm your PIN",
                 "color": "#1D7EDF",
                 "bold": true,
-                "size": 18.0,
+                "size": 16.0,
                 "alignment": "Center"
               },
               "children": []
