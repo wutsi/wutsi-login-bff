@@ -2,6 +2,7 @@ package com.wutsi.application.login.endpoint.login.screen
 
 import com.wutsi.application.login.endpoint.AbstractQuery
 import com.wutsi.application.login.endpoint.Page
+import com.wutsi.application.login.endpoint.onboard.screen.OnboardScreen
 import com.wutsi.application.shared.Theme
 import com.wutsi.application.shared.service.StringUtil.initials
 import com.wutsi.application.shared.service.URLBuilder
@@ -43,6 +44,7 @@ class LoginScreen(
     private val urlBuilder: URLBuilder,
     private val accountApi: WutsiAccountApi,
     private val logger: KVLogger,
+    private val onboardScreen: OnboardScreen
 ) : AbstractQuery() {
     @PostMapping
     fun index(
@@ -55,100 +57,107 @@ class LoginScreen(
         @RequestParam(name = "return-to-route", required = false, defaultValue = "true") returnToRoute: Boolean = true,
         @RequestParam(name = "auth", required = false, defaultValue = "true") auth: Boolean = true,
     ): Widget {
-        val account = findAccount(phoneNumber)
-        val displayName = account.displayName ?: getText("page.login.no-name")
-        logger.add("account_id", account.id)
+        try {
+            val account = findAccount(phoneNumber)
+            val displayName = account.displayName ?: getText("page.login.no-name")
+            logger.add("account_id", account.id)
 
-        return Screen(
-            id = screenId ?: Page.HOME,
-            appBar = AppBar(
-                backgroundColor = Theme.COLOR_WHITE,
-                foregroundColor = Theme.COLOR_BLACK,
-                elevation = 0.0,
-                title = title ?: getText("page.login.app-bar.title"),
-            ),
-            child = Container(
-                alignment = Center,
-                child = Column(
-                    children = listOf(
-                        Container(
-                            alignment = Center,
-                            padding = 5.0,
-                            child = Row(
-                                children = listOf(
-                                    Container(
-                                        padding = 5.0,
-                                        child = Icon(
-                                            code = icon ?: Theme.ICON_LOGIN,
-                                            color = Theme.COLOR_PRIMARY,
-                                            size = 16.0
+            return Screen(
+                id = screenId ?: Page.HOME,
+                appBar = AppBar(
+                    backgroundColor = Theme.COLOR_WHITE,
+                    foregroundColor = Theme.COLOR_BLACK,
+                    elevation = 0.0,
+                    title = title ?: getText("page.login.app-bar.title"),
+                ),
+                child = Container(
+                    alignment = Center,
+                    child = Column(
+                        children = listOf(
+                            Container(
+                                alignment = Center,
+                                padding = 5.0,
+                                child = Row(
+                                    children = listOf(
+                                        Container(
+                                            padding = 5.0,
+                                            child = Icon(
+                                                code = icon ?: Theme.ICON_LOGIN,
+                                                color = Theme.COLOR_PRIMARY,
+                                                size = 16.0
+                                            ),
+                                        ),
+                                        Container(
+                                            padding = 5.0,
+                                            child = Text(
+                                                caption = subTitle ?: getText("page.login.sub-title"),
+                                                alignment = TextAlignment.Center,
+                                            ),
                                         ),
                                     ),
-                                    Container(
-                                        padding = 5.0,
-                                        child = Text(
-                                            caption = subTitle ?: getText("page.login.sub-title"),
-                                            alignment = TextAlignment.Center,
+                                    crossAxisAlignment = center,
+                                    mainAxisAlignment = MainAxisAlignment.center
+                                )
+                            ),
+                            Container(
+                                padding = 5.0,
+                                alignment = Center,
+                                child = Row(
+                                    mainAxisAlignment = MainAxisAlignment.center,
+                                    children = listOf(
+                                        Container(
+                                            padding = 5.0,
+                                            child = CircleAvatar(
+                                                radius = 16.0,
+                                                child = if (account.pictureUrl.isNullOrEmpty())
+                                                    Text(initials(displayName))
+                                                else
+                                                    Image(
+                                                        url = account.pictureUrl!!
+                                                    )
+                                            ),
                                         ),
-                                    ),
-                                ),
-                                crossAxisAlignment = center,
-                                mainAxisAlignment = MainAxisAlignment.center
-                            )
-                        ),
-                        Container(
-                            padding = 5.0,
-                            alignment = Center,
-                            child = Row(
-                                mainAxisAlignment = MainAxisAlignment.center,
-                                children = listOf(
-                                    Container(
-                                        padding = 5.0,
-                                        child = CircleAvatar(
-                                            radius = 16.0,
-                                            child = if (account.pictureUrl.isNullOrEmpty())
-                                                Text(initials(displayName))
-                                            else
-                                                Image(
-                                                    url = account.pictureUrl!!
+                                        Container(
+                                            padding = 5.0,
+                                            child = Column(
+                                                children = listOf(
+                                                    Text(
+                                                        caption = displayName,
+                                                        bold = true
+                                                    ),
+                                                    Text(
+                                                        formattedPhoneNumber(
+                                                            account.phone?.number,
+                                                            account.phone?.country
+                                                        )
+                                                            ?: "",
+                                                    ),
                                                 )
-                                        ),
-                                    ),
-                                    Container(
-                                        padding = 5.0,
-                                        child = Column(
-                                            children = listOf(
-                                                Text(
-                                                    caption = displayName,
-                                                    bold = true
-                                                ),
-                                                Text(
-                                                    formattedPhoneNumber(account.phone?.number, account.phone?.country)
-                                                        ?: "",
-                                                ),
                                             )
                                         )
                                     )
                                 )
-                            )
-                        ),
-                        Container(
-                            alignment = Center,
-                            child = PinWithKeyboard(
-                                name = "pin",
-                                hideText = true,
-                                maxLength = 6,
-                                keyboardButtonSize = 70.0,
-                                action = Action(
-                                    type = Command,
-                                    url = urlBuilder.build(submitUrl(phoneNumber, auth, returnUrl, returnToRoute))
+                            ),
+                            Container(
+                                alignment = Center,
+                                child = PinWithKeyboard(
+                                    name = "pin",
+                                    hideText = true,
+                                    maxLength = 6,
+                                    keyboardButtonSize = 70.0,
+                                    action = Action(
+                                        type = Command,
+                                        url = urlBuilder.build(submitUrl(phoneNumber, auth, returnUrl, returnToRoute))
+                                    )
                                 )
                             )
                         )
                     )
                 )
-            )
-        ).toWidget()
+            ).toWidget()
+        } catch (ex: Exception) {
+            return onboardScreen.index()
+        }
     }
 
     private fun findAccount(phoneNumber: String): Account {
