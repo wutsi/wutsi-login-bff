@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.wutsi.application.login.service.BffTokenProvider
 import com.wutsi.platform.core.security.feign.FeignAuthorizationRequestInterceptor
 import com.wutsi.platform.core.tracing.feign.FeignTracingRequestInterceptor
+import com.wutsi.platform.core.util.feign.Custom5XXErrorDecoder
 import com.wutsi.platform.sms.Environment.PRODUCTION
 import com.wutsi.platform.sms.Environment.SANDBOX
 import com.wutsi.platform.sms.WutsiSmsApi
@@ -28,7 +29,8 @@ public class SMSApiConfiguration(
             interceptors = listOf(
                 tracingRequestInterceptor,
                 FeignAuthorizationRequestInterceptor(tokenProvider)
-            )
+            ),
+            errorDecoder = Custom5XXErrorDecoder()
         )
 
     private fun environment(): com.wutsi.platform.sms.Environment =
