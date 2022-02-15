@@ -18,6 +18,7 @@ import org.springframework.core.env.Profiles
 public class AccountApiConfiguration(
     private val tokenProvider: BffTokenProvider,
     private val tracingRequestInterceptor: FeignTracingRequestInterceptor,
+    private val acceptLanguageInterceptor: FeignTracingRequestInterceptor,
     private val mapper: ObjectMapper,
     private val env: Environment
 ) {
@@ -28,7 +29,8 @@ public class AccountApiConfiguration(
             mapper = mapper,
             interceptors = listOf(
                 tracingRequestInterceptor,
-                FeignAuthorizationRequestInterceptor(tokenProvider)
+                FeignAuthorizationRequestInterceptor(tokenProvider),
+                acceptLanguageInterceptor
             ),
             errorDecoder = Custom5XXErrorDecoder()
         )
