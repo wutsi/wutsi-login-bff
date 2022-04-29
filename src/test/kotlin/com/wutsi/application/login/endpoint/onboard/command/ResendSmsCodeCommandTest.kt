@@ -41,7 +41,7 @@ internal class ResendSmsCodeCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(Prompt, action.type)
         assertNotNull(action.prompt)
         assertEquals(Information.name, action.prompt?.attributes?.get("type"))

@@ -27,7 +27,7 @@ internal class ConfirmPinCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(Page, action.type)
         assertEquals("page:/${com.wutsi.application.login.endpoint.Page.FINAL}", action.url)
         assertNull(action.prompt)
@@ -43,7 +43,7 @@ internal class ConfirmPinCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(ActionType.Prompt, action.type)
         assertNotNull(action.prompt)
     }

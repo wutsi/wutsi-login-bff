@@ -66,7 +66,7 @@ internal class CreateWalletCommandTest : AbstractEndpointTest() {
         assertEquals(listOf("true"), response.headers["x-onboarded"])
         assertEquals(listOf(accessToken), response.headers["x-access-token"])
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(ActionType.Route, action.type)
         assertEquals("route:/", action.url)
         assertEquals(true, action.replacement)
@@ -81,7 +81,7 @@ internal class CreateWalletCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(ActionType.Route, action.type)
         assertEquals(
             "http://localhost:0/?title=You+have+a+Wallet.&sub-title=Enter+your+PIN&phone=%2B15147550011&return-to-route=true&return-url=route%3A%2F",

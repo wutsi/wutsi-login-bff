@@ -29,7 +29,7 @@ internal class SaveProfileCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(Page, action.type)
         assertEquals("page:/${com.wutsi.application.login.endpoint.Page.PIN}", action.url)
         assertNull(action.prompt)

@@ -8,7 +8,6 @@ import com.wutsi.application.login.endpoint.onboard.dto.VerifySmsCodeRequest
 import com.wutsi.application.login.entity.AccountEntity
 import com.wutsi.application.login.exception.PhoneAlreadyAssignedException
 import com.wutsi.application.login.exception.PinMismatchException
-import com.wutsi.application.shared.service.TogglesProvider
 import com.wutsi.platform.account.WutsiAccountApi
 import com.wutsi.platform.account.dto.AccountSummary
 import com.wutsi.platform.account.dto.CreateAccountRequest
@@ -42,7 +41,6 @@ class OnboardService(
     private val tracingContext: RequestTracingContext,
     private val countryDetector: CountryDetector,
     private val cache: Cache,
-    private val togglesProvider: TogglesProvider,
 
     @Value("\${wutsi.platform.security.api-key}") private val apiKey: String,
 ) {
@@ -89,19 +87,14 @@ class OnboardService(
     private fun sendSmsCode(phoneNumber: String): AccountEntity {
         val country = countryDetector.detect(phoneNumber)
         val language = LocaleContextHolder.getLocale().language
-        val toggleSendSmsCode = togglesProvider.isSendSmsCodeEnabled(phoneNumber)
 
         // Send verification
-        logger.add("toggle_send_sms_code", toggleSendSmsCode)
-        val verificationId: Long = if (toggleSendSmsCode)
-            smsApi.sendVerification(
-                SendVerificationRequest(
-                    phoneNumber = phoneNumber,
-                    language = language
-                )
-            ).id
-        else
-            -1
+        val verificationId = smsApi.sendVerification(
+            SendVerificationRequest(
+                phoneNumber = phoneNumber,
+                language = language
+            )
+        ).id
 
         // Update state
         return save(
@@ -118,15 +111,10 @@ class OnboardService(
     fun verifyCode(request: VerifySmsCodeRequest) {
         val state = getState()
         try {
-            val toggleVerify = togglesProvider.isVerifySmsCodeEnabled(state.phoneNumber)
-            logger.add("toggle_verify", toggleVerify)
-
-            if (toggleVerify) {
-                smsApi.validateVerification(
-                    id = state.verificationId,
-                    code = request.code
-                )
-            }
+            smsApi.validateVerification(
+                id = state.verificationId,
+                code = request.code
+            )
 
             if (findAccount(state) != null) {
                 throw PhoneAlreadyAssignedException()

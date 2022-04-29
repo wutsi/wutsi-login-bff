@@ -56,10 +56,10 @@ internal class VerifySmsCodeCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
-        assertEquals(Page, action?.type)
-        assertEquals("page:/${com.wutsi.application.login.endpoint.Page.PROFILE}", action?.url)
-        assertNull(action?.prompt)
+        val action = response.body!!
+        assertEquals(Page, action.type)
+        assertEquals("page:/${com.wutsi.application.login.endpoint.Page.PROFILE}", action.url)
+        assertNull(action.prompt)
     }
 
     @Test
@@ -72,13 +72,13 @@ internal class VerifySmsCodeCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
-        assertEquals(Route, action?.type)
+        val action = response.body!!
+        assertEquals(Route, action.type)
         assertEquals(
             "http://localhost:0/?title=You+have+a+Wallet.&sub-title=Enter+your+PIN&phone=%2B15147550011&return-to-route=true&return-url=route%3A%2F",
-            action?.url
+            action.url
         )
-        assertNull(action?.prompt)
+        assertNull(action.prompt)
     }
 
     @Test
@@ -90,7 +90,7 @@ internal class VerifySmsCodeCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(Prompt, action.type)
         assertNotNull(action.prompt)
         assertEquals(DialogType.Error.name, action.prompt?.attributes?.get("type"))
@@ -105,7 +105,7 @@ internal class VerifySmsCodeCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(Page, action.type)
         assertEquals("page:/${com.wutsi.application.login.endpoint.Page.PHONE}", action.url)
     }

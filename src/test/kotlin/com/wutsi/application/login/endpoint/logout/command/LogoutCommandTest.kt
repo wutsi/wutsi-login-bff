@@ -34,7 +34,7 @@ internal class LogoutCommandTest : AbstractEndpointTest() {
 
         verify(securityApi).logout()
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(ActionType.Route, action.type)
         assertEquals("route:/~", action.url)
         assertEquals(true, action.replacement)

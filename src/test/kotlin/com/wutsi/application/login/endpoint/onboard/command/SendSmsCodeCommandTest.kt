@@ -43,7 +43,7 @@ internal class SendSmsCodeCommandTest : AbstractEndpointTest() {
 
         assertEquals(200, response.statusCodeValue)
 
-        val action = response.body
+        val action = response.body!!
         assertEquals(ActionType.Page, action.type)
         assertEquals("page:/1", action.url)
         assertNull(action.prompt)
