@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RestController
 @RequestMapping("/pages/phone")
-public class PhonePage(
+class PhonePage(
     private val urlBuilder: URLBuilder,
     private val tenantProvider: TenantProvider
 ) : AbstractOnboardQuery() {
@@ -74,7 +74,8 @@ public class PhonePage(
                                     name = "phoneNumber",
                                     type = Phone,
                                     caption = getText("page.phone.field.phone.caption"),
-                                    required = true
+                                    required = true,
+                                    initialCountry = tenant.countries[0]
                                 ),
                             ),
                             Container(
