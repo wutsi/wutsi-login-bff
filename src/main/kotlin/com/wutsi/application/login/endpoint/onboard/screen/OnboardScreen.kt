@@ -23,6 +23,7 @@ class OnboardScreen(
                 Page(url = urlBuilder.build("pages/phone")),
                 Page(url = urlBuilder.build("pages/verification")),
                 Page(url = urlBuilder.build("pages/profile")),
+                Page(url = urlBuilder.build("pages/city")),
                 Page(url = urlBuilder.build("pages/pin")),
                 Page(url = urlBuilder.build("pages/confirm-pin")),
                 Page(url = urlBuilder.build("pages/final")),

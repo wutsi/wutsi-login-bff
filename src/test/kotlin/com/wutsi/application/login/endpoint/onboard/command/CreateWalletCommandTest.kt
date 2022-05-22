@@ -61,6 +61,7 @@ internal class CreateWalletCommandTest : AbstractEndpointTest() {
         assertEquals("Ray Sponsible", request.firstValue.displayName)
         assertEquals("123456", request.firstValue.password)
         assertEquals(true, request.firstValue.addPaymentMethod)
+        assertEquals(2225940L, request.firstValue.cityId)
         assertNull(request.firstValue.pictureUrl)
 
         assertEquals(listOf("true"), response.headers["x-onboarded"])

@@ -12,6 +12,7 @@ data class AccountEntity(
     var language: String = "",
     var country: String = "",
     var accountId: Long? = null,
+    var cityId: Long? = null,
 
     var paymentPhoneNumber: String? = null,
     val created: OffsetDateTime = OffsetDateTime.now()

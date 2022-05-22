@@ -1,6 +1,7 @@
 package com.wutsi.application.login.service
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.wutsi.application.login.endpoint.onboard.dto.SaveCityRequest
 import com.wutsi.application.login.endpoint.onboard.dto.SavePinRequest
 import com.wutsi.application.login.endpoint.onboard.dto.SaveProfileRequest
 import com.wutsi.application.login.endpoint.onboard.dto.SendSmsCodeRequest
@@ -71,9 +72,7 @@ class OnboardService(
     fun resendSmsCode() {
         val state = getState()
         try {
-            sendSmsCode(
-                SendSmsCodeRequest(state.phoneNumber)
-            )
+            sendSmsCode(SendSmsCodeRequest(state.phoneNumber))
         } finally {
             log(state)
         }
@@ -154,12 +153,21 @@ class OnboardService(
         }
     }
 
+    fun saveCity(request: SaveCityRequest) {
+        val state = getState()
+        try {
+            state.cityId = request.cityId
+            save(state)
+        } finally {
+            log(state)
+        }
+    }
+
     fun createWallet(): String {
         val state = getState()
         try {
             val accountId = createAccount(state)
             logger.add("account_id", accountId)
-
             return authenticate(state)
         } catch (ex: FeignException) {
             val response = toErrorResponse(ex)
@@ -177,6 +185,7 @@ class OnboardService(
         logger.add("display_name", state.displayName)
         logger.add("country", state.country)
         logger.add("account_id", state.accountId)
+        logger.add("city_id", state.cityId)
         logger.add("language", state.language)
         logger.add("payment_phone_number", state.paymentPhoneNumber)
         logger.add("verification_id", state.verificationId)
@@ -199,7 +208,8 @@ class OnboardService(
                 language = state.language,
                 country = state.country,
                 password = state.pin,
-                addPaymentMethod = true
+                addPaymentMethod = true,
+                cityId = state.cityId
             )
         ).id
 

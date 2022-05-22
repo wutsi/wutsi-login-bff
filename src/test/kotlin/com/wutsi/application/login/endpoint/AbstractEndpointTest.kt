@@ -106,7 +106,8 @@ abstract class AbstractEndpointTest {
             language = "en",
             displayName = "Ray Sponsible",
             pin = "123456",
-            verificationId = 1111
+            verificationId = 1111,
+            cityId = 2225940L
         )
         doReturn(account).whenever(cache).get(eq(DEVICE_ID), eq(AccountEntity::class.java))
 
