@@ -1,7 +1,7 @@
 package com.wutsi.application.login.config
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.wutsi.application.login.service.BffTokenProvider
+import com.wutsi.platform.core.security.TokenProvider
 import com.wutsi.platform.core.security.feign.FeignAuthorizationRequestInterceptor
 import com.wutsi.platform.core.tracing.feign.FeignTracingRequestInterceptor
 import com.wutsi.platform.core.util.feign.Custom5XXErrorDecoder
@@ -15,8 +15,8 @@ import org.springframework.core.env.Environment
 import org.springframework.core.env.Profiles
 
 @Configuration
-public class TenantApiConfiguration(
-    private val tokenProvider: BffTokenProvider,
+class TenantApiConfiguration(
+    private val tokenProvider: TokenProvider,
     private val tracingRequestInterceptor: FeignTracingRequestInterceptor,
     private val mapper: ObjectMapper,
     private val env: Environment
