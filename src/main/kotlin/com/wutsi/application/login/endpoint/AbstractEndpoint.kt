@@ -27,6 +27,10 @@ abstract class AbstractEndpoint {
     @Autowired
     private lateinit var phoneNumberUtil: PhoneNumberUtil
 
+    @ExceptionHandler(Throwable::class)
+    fun onException(ex: Throwable) =
+        createErrorAction(ex, "message.error.unexpected-error")
+
     @ExceptionHandler(AuthenticationException::class)
     fun onAuthenticationException(ex: AuthenticationException) =
         createErrorAction(ex, "message.error.login-failed")
